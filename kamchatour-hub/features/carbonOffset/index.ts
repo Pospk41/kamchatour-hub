@@ -1,0 +1,1 @@
+export function estimateCarbonOffset(): number { return 0; }
