@@ -86,7 +86,7 @@ export default function HomeScreen() {
               <Text style={styles.actionText}>Бронирование</Text>
             </View>
             
-            <View style={styles.actionItem} onTouchEnd={() => router.push('/emergency')}>
+            <View style={styles.actionItem} onTouchEnd={() => router.push('/emergency' as never)}>
               <Ionicons name="medical" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Убежища</Text>
             </View>
