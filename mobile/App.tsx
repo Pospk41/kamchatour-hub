@@ -41,6 +41,16 @@ async function apiMe(token: string) {
   return res.json();
 }
 
+async function apiSignup(email: string, password: string, role: Role, display_name: string) {
+  const res = await fetch(`${API_URL}/auth/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, role, display_name }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
 function LoginScreen({ navigation }: any) {
   const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState('operator@example.com');
@@ -67,7 +77,58 @@ function LoginScreen({ navigation }: any) {
       <TouchableOpacity onPress={onLogin} style={{ backgroundColor: '#3498db', padding: 14, borderRadius: 10, alignItems: 'center' }}>
         <Text style={{ color: '#fff', fontWeight: '600' }}>Войти</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={{ marginTop: 12, alignItems: 'center' }}>
+        <Text style={{ color: '#3498db', fontWeight: '600' }}>Регистрация</Text>
+      </TouchableOpacity>
     </View>
+  );
+}
+
+function SignupScreen({ navigation }: any) {
+  const { setAuth } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [role, setRole] = useState<Role>('operator');
+  const [error, setError] = useState<string | null>(null);
+
+  const onSignup = async () => {
+    try {
+      setError(null);
+      await apiSignup(email.trim(), password, role, displayName || email.split('@')[0]);
+      const { access_token } = await apiLogin(email.trim(), password);
+      const me = await apiMe(access_token);
+      setAuth({ token: access_token, role: me.role });
+    } catch (e: any) {
+      setError(e.message);
+    }
+  };
+
+  const RoleButton = ({ value, label }: { value: Role; label: string }) => (
+    <TouchableOpacity onPress={() => setRole(value)} style={{ paddingVertical: 8, paddingHorizontal: 12, borderRadius: 8, borderWidth: 1, borderColor: role === value ? '#3498db' : '#ddd', backgroundColor: role === value ? '#eaf4fd' : '#fff', marginRight: 8 }}>
+      <Text style={{ color: '#2c3e50' }}>{label}</Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 16 }}>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>Регистрация</Text>
+      <TextInput placeholder="Имя/Компания" value={displayName} onChangeText={setDisplayName} style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 }} />
+      <TextInput placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 }} />
+      <TextInput placeholder="Пароль" value={password} secureTextEntry onChangeText={setPassword} style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 }} />
+      <View style={{ flexDirection: 'row', marginBottom: 12 }}>
+        <RoleButton value="operator" label="Туроператор" />
+        <RoleButton value="guide" label="Гид" />
+        <RoleButton value="traveler" label="Путешественник" />
+      </View>
+      {error && <Text style={{ color: 'red', marginBottom: 8 }}>{error}</Text>}
+      <TouchableOpacity onPress={onSignup} style={{ backgroundColor: '#27ae60', padding: 14, borderRadius: 10, alignItems: 'center' }}>
+        <Text style={{ color: '#fff', fontWeight: '600' }}>Создать аккаунт</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={{ marginTop: 12, alignItems: 'center' }}>
+        <Text style={{ color: '#3498db', fontWeight: '600' }}>Назад к входу</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
@@ -191,7 +252,13 @@ function GuideTabs() {
 
 function Root(): JSX.Element {
   const { auth } = useContext(AuthContext);
-  if (!auth.token) return <LoginScreen /> as any;
+  if (!auth.token)
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
+    ) as any;
   if (auth.role === 'operator') return <OperatorTabs /> as any;
   if (auth.role === 'guide') return <GuideTabs /> as any;
   return (
