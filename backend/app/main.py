@@ -392,7 +392,7 @@ def get_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
 
 
 @app.get("/users", response_model=list[UserPublic])
-def list_users(role: Optional[RoleLiteral] = None, db: Annotated[Session, Depends(get_db)] = Depends(get_db)):
+def list_users(role: Optional[RoleLiteral] = None, db: Session = Depends(get_db)):
     q = db.query(User)
     if role:
         q = q.filter(User.role == role)
@@ -617,8 +617,8 @@ def cabinet_summary(
 def discover(
     role: Optional[RoleLiteral] = None,
     limit: int = 50,
-    db: Annotated[Session, Depends(get_db)] = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     target_role: RoleLiteral
     if role is not None:
