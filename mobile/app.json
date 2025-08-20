@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Tours Aggregator",
+    "slug": "tours-aggregator",
+    "scheme": "tours",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "jsEngine": "hermes",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": { "supportsTablet": true },
+    "android": { "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#ffffff" } },
+    "web": { "bundler": "metro" },
+    "extra": {
+      "eas": { "projectId": "local" }
+    }
+  }
+}
