@@ -1,5 +1,5 @@
-INFO:     Started server process [6402]
+INFO:     Started server process [10507]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
-INFO:     127.0.0.1:34216 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52502 - "GET /healthz HTTP/1.1" 200 OK

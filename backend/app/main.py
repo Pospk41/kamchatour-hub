@@ -139,7 +139,7 @@ class Boost(Base):
 # -------------
 
 
-RoleLiteral = Literal["traveler", "operator"]
+RoleLiteral = Literal["traveler", "operator", "guide", "admin"]
 
 
 class Token(BaseModel):
@@ -316,7 +316,7 @@ def on_startup() -> None:
 def signup(user_in: UserCreate, db: Annotated[Session, Depends(get_db)]):
     if get_user_by_email(db, user_in.email):
         raise HTTPException(status_code=400, detail="Email already registered")
-    if user_in.role not in ("traveler", "operator"):
+    if user_in.role not in ("traveler", "operator", "guide", "admin"):
         raise HTTPException(status_code=400, detail="Invalid role")
     user = User(
         email=user_in.email,
@@ -662,4 +662,3 @@ def discover(
 @app.get("/healthz")
 def healthcheck():
     return {"status": "ok"}
-
