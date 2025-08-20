@@ -134,6 +134,36 @@ class Boost(Base):
     user = relationship("User", back_populates="boosts")
 
 
+# New domain models: Tour and GuideActivity
+class Tour(Base):
+    __tablename__ = "tours"
+    id = Column(Integer, primary_key=True)
+    operator_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
+    price = Column(Float, nullable=False, default=0.0)
+    currency = Column(String(8), nullable=False, default="RUB")
+    duration_hours = Column(Integer, nullable=True)
+    difficulty = Column(String(50), nullable=True)
+    location = Column(JSON, nullable=True)  # {city,country,lat,lng}
+    images = Column(JSON, nullable=True)  # [urls]
+    is_active = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime, server_default=func.now(), nullable=False)
+
+
+class GuideActivity(Base):
+    __tablename__ = "guide_activities"
+    id = Column(Integer, primary_key=True)
+    guide_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
+    price = Column(Float, nullable=True)
+    duration_hours = Column(Integer, nullable=True)
+    tags = Column(JSON, nullable=True)  # [strings]
+    is_active = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime, server_default=func.now(), nullable=False)
+
+
 # -------------
 # Pydantic Schemas
 # -------------
@@ -217,6 +247,55 @@ class BoostPublic(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
+class TourCreate(BaseModel):
+    title: str = Field(min_length=2, max_length=200)
+    description: Optional[str] = None
+    price: float = Field(ge=0)
+    currency: str = Field(default="RUB", min_length=3, max_length=8)
+    duration_hours: Optional[int] = Field(default=None, ge=1, le=24*30)
+    difficulty: Optional[str] = None
+    location: Optional[dict] = None
+    images: Optional[list[str]] = None
+
+
+class TourPublic(BaseModel):
+    id: int
+    operator_id: int
+    title: str
+    description: Optional[str]
+    price: float
+    currency: str
+    duration_hours: Optional[int]
+    difficulty: Optional[str]
+    location: Optional[dict]
+    images: Optional[list[str]]
+    is_active: bool
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class GuideActivityCreate(BaseModel):
+    title: str = Field(min_length=2, max_length=200)
+    description: Optional[str] = None
+    price: Optional[float] = Field(default=None, ge=0)
+    duration_hours: Optional[int] = Field(default=None, ge=1, le=24*30)
+    tags: Optional[list[str]] = None
+
+
+class GuideActivityPublic(BaseModel):
+    id: int
+    guide_id: int
+    title: str
+    description: Optional[str]
+    price: Optional[float]
+    duration_hours: Optional[int]
+    tags: Optional[list[str]]
+    is_active: bool
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 # -------------
 # Auth Utilities
@@ -398,6 +477,118 @@ def list_users(role: Optional[RoleLiteral] = None, db: Session = Depends(get_db)
         q = q.filter(User.role == role)
     return q.order_by(User.created_at.desc()).limit(100).all()
 
+
+# -------------
+# Tours (Operator)
+# -------------
+
+
+@app.post("/operator/tours", response_model=TourPublic)
+def operator_create_tour(
+    payload: TourCreate,
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(require_role("operator"))],
+):
+    tour = Tour(
+        operator_id=current_user.id,
+        title=payload.title,
+        description=payload.description,
+        price=payload.price,
+        currency=payload.currency,
+        duration_hours=payload.duration_hours,
+        difficulty=payload.difficulty,
+        location=payload.location,
+        images=payload.images,
+        is_active=False,
+    )
+    db.add(tour)
+    db.commit()
+    db.refresh(tour)
+    return tour
+
+
+@app.get("/operator/tours", response_model=list[TourPublic])
+def operator_list_tours(
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(require_role("operator"))],
+):
+    return (
+        db.query(Tour)
+        .filter(Tour.operator_id == current_user.id)
+        .order_by(Tour.created_at.desc())
+        .all()
+    )
+
+
+@app.post("/operator/tours/{tour_id}/publish", response_model=TourPublic)
+def operator_publish_tour(
+    tour_id: int,
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(require_role("operator"))],
+):
+    tour = db.get(Tour, tour_id)
+    if not tour or tour.operator_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Tour not found")
+    tour.is_active = True
+    db.add(tour)
+    db.commit()
+    db.refresh(tour)
+    return tour
+
+
+# -------------
+# Guide Activities (Guide)
+# -------------
+
+
+@app.post("/guide/activities", response_model=GuideActivityPublic)
+def guide_create_activity(
+    payload: GuideActivityCreate,
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(require_role("guide"))],
+):
+    activity = GuideActivity(
+        guide_id=current_user.id,
+        title=payload.title,
+        description=payload.description,
+        price=payload.price,
+        duration_hours=payload.duration_hours,
+        tags=payload.tags,
+        is_active=False,
+    )
+    db.add(activity)
+    db.commit()
+    db.refresh(activity)
+    return activity
+
+
+@app.get("/guide/activities", response_model=list[GuideActivityPublic])
+def guide_list_activities(
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(require_role("guide"))],
+):
+    return (
+        db.query(GuideActivity)
+        .filter(GuideActivity.guide_id == current_user.id)
+        .order_by(GuideActivity.created_at.desc())
+        .all()
+    )
+
+
+@app.post("/guide/activities/{activity_id}/publish", response_model=GuideActivityPublic)
+def guide_publish_activity(
+    activity_id: int,
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(require_role("guide"))],
+):
+    activity = db.get(GuideActivity, activity_id)
+    if not activity or activity.guide_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    activity.is_active = True
+    db.add(activity)
+    db.commit()
+    db.refresh(activity)
+    return activity
 
 # -------------
 # Ratings
