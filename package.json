@@ -4,13 +4,16 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
+    "start:devclient": "expo start --dev-client",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "build": "expo export"
+    "build": "expo export",
+    "eas:build:android:dev": "eas build -p android --profile development",
+    "eas:build:ios:dev": "eas build -p ios --profile development"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -23,6 +26,7 @@
     "expo": "~53.0.20",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.7",
+    "expo-dev-client": "~5.2.4",
     "expo-font": "~13.3.2",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.4.0",
@@ -52,6 +56,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
+    "eas-cli": "16.17.4",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
     "typescript": "~5.8.3"
