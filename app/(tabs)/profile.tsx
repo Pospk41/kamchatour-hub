@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useLocation } from '../../hooks/useLocation';
 
 export default function ProfileScreen() {
-  const { user, signOut, isLoading } = useAuth();
+  const { user, signOut, isLoading, signInAsGuest } = useAuth() as any;
   const { location, requestPermissions } = useLocation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [locationSharing, setLocationSharing] = useState(true);
@@ -199,9 +199,14 @@ export default function ProfileScreen() {
           <Text style={styles.notAuthSubtitle}>
             Войдите в аккаунт для доступа к профилю
           </Text>
-          <TouchableOpacity style={styles.signInButton}>
-            <Text style={styles.signInButtonText}>Войти</Text>
-          </TouchableOpacity>
+          <View style={{gap:12, width:'100%', alignItems:'center'}}>
+            <TouchableOpacity style={styles.signInButton}>
+              <Text style={styles.signInButtonText}>Войти</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.signInButton, {backgroundColor:'#f1f5f9'}]} onPress={signInAsGuest}>
+              <Text style={[styles.signInButtonText, {color:'#0f172a'}]}>Войти как гость</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     );

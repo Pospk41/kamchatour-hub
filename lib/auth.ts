@@ -169,3 +169,27 @@ export const resetPassword = async (email: string): Promise<void> => {
   // In real app, send reset email
   console.log('Password reset email sent to:', email);
 };
+
+export const signInAsGuest = async (): Promise<User> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  const guest: User = {
+    id: `guest-${Date.now()}`,
+    email: `guest@local`,
+    name: 'Гость',
+    preferences: {
+      language: 'ru',
+      notifications: false,
+      emergencyAlerts: false,
+      locationSharing: false,
+    },
+    // @ts-ignore mark runtime-only flag
+    isGuest: true,
+  } as any;
+
+  await AsyncStorage.setItem('session', JSON.stringify({ userId: guest.id, guest: true, timestamp: Date.now() }));
+  await AsyncStorage.setItem('user', JSON.stringify(guest));
+
+  return guest;
+};
