@@ -7,7 +7,11 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "eas:login": "eas login --token $EAS_TOKEN",
+    "eas:update": "eas update --branch production --message 'Auto update'",
+    "eas:build:android": "eas build --platform android --profile production",
+    "eas:build:ios": "eas build --platform ios --profile production"
   },
   "dependencies": {
     "expo": "^51.0.0",

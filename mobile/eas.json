@@ -1,0 +1,20 @@
+{
+  "cli": {
+    "version": ">= 3.0.0"
+  },
+  "build": {
+    "production": {
+      "developmentClient": false,
+      "distribution": "store",
+      "channel": "production"
+    }
+  },
+  "submit": {
+    "production": {}
+  },
+  "update": {
+    "production": {
+      "channel": "production"
+    }
+  }
+}

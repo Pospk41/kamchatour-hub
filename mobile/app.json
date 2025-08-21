@@ -14,7 +14,10 @@
     },
     "ios": { "supportsTablet": true },
     "android": { "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#ffffff" } },
-    "updates": { "checkAutomatically": "ON_LOAD", "fallbackToCacheTimeout": 0 },
+    "updates": { "checkAutomatically": "ON_LOAD", "fallbackToCacheTimeout": 0, "url": "https://u.expo.dev/local" },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "web": { "bundler": "metro" },
     "extra": {
       "eas": { "projectId": "local" }
