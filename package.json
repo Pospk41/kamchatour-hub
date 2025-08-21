@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "build": "expo export"
+    "build": "expo export",
+    "preinstall": "npm config set legacy-peer-deps true || true"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.3",
