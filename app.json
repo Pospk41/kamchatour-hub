@@ -2,7 +2,7 @@
   "expo": {
     "name": "kamchatka",
     "slug": "kamchatka",
-    "version": "1.0.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "scheme": "kamchatka",
     "userInterfaceStyle": "automatic",
