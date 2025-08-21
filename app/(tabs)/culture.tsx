@@ -3,66 +3,12 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useCraftMasters, useCulturalEvents } from '../../hooks/useCulture';
 
 export default function CultureScreen() {
   const router = useRouter();
-
-  const masterClasses = [
-    {
-      id: '1',
-      title: 'Резьба по кости',
-      master: 'Алексей Петров',
-      village: 'Усть-Камчатск',
-      duration: '2 часа',
-      price: 1500,
-      image: '🦴',
-    },
-    {
-      id: '2',
-      title: 'Плетение из бересты',
-      master: 'Мария Сидорова',
-      village: 'Елизово',
-      duration: '3 часа',
-      price: 2000,
-      image: '🌿',
-    },
-    {
-      id: '3',
-      title: 'Изготовление амулетов',
-      master: 'Виктор Козлов',
-      village: 'Петропавловск-Камчатский',
-      duration: '1.5 часа',
-      price: 1200,
-      image: '🔮',
-    },
-  ];
-
-  const events = [
-    {
-      id: '1',
-      title: 'Фестиваль коренных народов',
-      date: '15-17 августа',
-      location: 'Петропавловск-Камчатский',
-      type: 'Фестиваль',
-      image: '🎭',
-    },
-    {
-      id: '2',
-      title: 'День рыбака',
-      date: '12 июля',
-      location: 'Усть-Камчатск',
-      type: 'Праздник',
-      image: '🐟',
-    },
-    {
-      id: '3',
-      title: 'Выставка камчатских ремесел',
-      date: '20-25 сентября',
-      location: 'Елизово',
-      type: 'Выставка',
-      image: '🎨',
-    },
-  ];
+  const { data: masterClasses = [], isLoading: mastersLoading } = useCraftMasters();
+  const { data: events = [], isLoading: eventsLoading } = useCulturalEvents();
 
   const renderMasterClass = (item: any) => (
     <TouchableOpacity key={item.id} style={styles.masterClassCard}>
@@ -125,7 +71,11 @@ export default function CultureScreen() {
               <Ionicons name="chevron-forward" size={16} color="#0891b2" />
             </TouchableOpacity>
           </View>
-          {masterClasses.map(renderMasterClass)}
+          {mastersLoading ? (
+            <Text>Загрузка...</Text>
+          ) : (
+            masterClasses.map(renderMasterClass)
+          )}
         </View>
 
         {/* Events Section */}
@@ -137,7 +87,11 @@ export default function CultureScreen() {
               <Ionicons name="chevron-forward" size={16} color="#0891b2" />
             </TouchableOpacity>
           </View>
-          {events.map(renderEvent)}
+          {eventsLoading ? (
+            <Text>Загрузка...</Text>
+          ) : (
+            events.map(renderEvent)
+          )}
         </View>
 
         {/* Quick Actions */}
