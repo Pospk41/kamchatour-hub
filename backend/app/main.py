@@ -360,6 +360,101 @@ app.add_middleware(
 @app.on_event("startup")
 def on_startup() -> None:
     Base.metadata.create_all(bind=engine)
+    # Demo seeding on dev flag
+    if os.getenv("SEED_DEMO", "0").lower() in ("1", "true") or os.getenv("APP_ENV", "").lower() in ("dev", "development"):
+        db = SessionLocal()
+        try:
+            # Operator
+            operator_email = "operator@example.com"
+            operator = db.query(User).filter(User.email == operator_email).first()
+            if not operator:
+                operator = User(
+                    email=operator_email,
+                    password_hash=get_password_hash("password"),
+                    role="operator",
+                    display_name="Operator",
+                )
+                db.add(operator)
+                db.commit()
+                db.refresh(operator)
+
+            # Guide
+            guide_email = "guide@example.com"
+            guide = db.query(User).filter(User.email == guide_email).first()
+            if not guide:
+                guide = User(
+                    email=guide_email,
+                    password_hash=get_password_hash("password"),
+                    role="guide",
+                    display_name="Guide",
+                )
+                db.add(guide)
+                db.commit()
+                db.refresh(guide)
+
+            # Tours (seed and publish)
+            demo_tours = [
+                {
+                    "title": "Восхождение на Авачу",
+                    "description": "Классический маршрут",
+                    "price": 18000,
+                    "currency": "RUB",
+                    "duration_hours": 8,
+                    "difficulty": "medium",
+                    "location": {"city": "Петропавловск-Камчатский"},
+                },
+                {
+                    "title": "Морская рыбалка",
+                    "description": "Бухта Авача",
+                    "price": 22000,
+                    "currency": "RUB",
+                    "duration_hours": 6,
+                    "difficulty": "easy",
+                    "location": {"city": "Петропавловск-Камчатский"},
+                },
+            ]
+            for data in demo_tours:
+                exists = (
+                    db.query(Tour)
+                    .filter(Tour.operator_id == operator.id, Tour.title == data["title"])
+                    .first()
+                )
+                if not exists:
+                    t = Tour(
+                        operator_id=operator.id,
+                        title=data["title"],
+                        description=data.get("description"),
+                        price=data.get("price", 0.0),
+                        currency=data.get("currency", "RUB"),
+                        duration_hours=data.get("duration_hours"),
+                        difficulty=data.get("difficulty"),
+                        location=data.get("location"),
+                        images=[],
+                        is_active=True,
+                    )
+                    db.add(t)
+                    db.commit()
+
+            # Guide activity (seed and publish)
+            exists_act = (
+                db.query(GuideActivity)
+                .filter(GuideActivity.guide_id == guide.id, GuideActivity.title == "Пешеходная экскурсия по центру")
+                .first()
+            )
+            if not exists_act:
+                a = GuideActivity(
+                    guide_id=guide.id,
+                    title="Пешеходная экскурсия по центру",
+                    description="Лёгкий темп",
+                    price=5000,
+                    duration_hours=3,
+                    tags=["пешком", "история"],
+                    is_active=True,
+                )
+                db.add(a)
+                db.commit()
+        finally:
+            db.close()
 
 
 @app.post("/auth/signup", response_model=UserPublic)
