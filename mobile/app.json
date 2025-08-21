@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Kamchatour Hub",
+    "slug": "kamchatour-hub",
+    "owner": "pos-servis",
+    "scheme": "tours",
+    "version": "0.1.1",
+    "orientation": "portrait",
+    "jsEngine": "hermes",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "updates": {
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/34abf0cb-fdf3-48b7-b93a-129e3ba369b0"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "34abf0cb-fdf3-48b7-b93a-129e3ba369b0"
+      }
+    }
+  }
+}
