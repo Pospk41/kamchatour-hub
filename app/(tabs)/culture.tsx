@@ -66,7 +66,7 @@ export default function CultureScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Мастер-классы</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
+            <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push('/culture/masters' as any)}>
               <Text style={styles.seeAllText}>Все</Text>
               <Ionicons name="chevron-forward" size={16} color="#0891b2" />
             </TouchableOpacity>
@@ -82,7 +82,7 @@ export default function CultureScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>События</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
+            <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push('/culture/events' as any)}>
               <Text style={styles.seeAllText}>Все</Text>
               <Ionicons name="chevron-forward" size={16} color="#0891b2" />
             </TouchableOpacity>
