@@ -11,10 +11,5 @@
   },
   "submit": {
     "production": {}
-  },
-  "update": {
-    "production": {
-      "channel": "production"
-    }
   }
 }
