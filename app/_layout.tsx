@@ -5,6 +5,7 @@ import { LocationProvider } from '../contexts/LocationContext';
 import { EmergencyProvider } from '../contexts/EmergencyContext';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../state/queryClient';
+import '../lib/i18n';
 
 export default function RootLayout() {
   return (

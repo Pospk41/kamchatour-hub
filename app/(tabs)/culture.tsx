@@ -4,11 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useCraftMasters, useCulturalEvents } from '../../hooks/useCulture';
+import { useTranslation } from 'react-i18next';
 
 export default function CultureScreen() {
   const router = useRouter();
   const { data: masterClasses = [], isLoading: mastersLoading } = useCraftMasters();
   const { data: events = [], isLoading: eventsLoading } = useCulturalEvents();
+  const { t } = useTranslation();
 
   const renderMasterClass = (item: any) => (
     <TouchableOpacity key={item.id} style={styles.masterClassCard}>
@@ -56,16 +58,14 @@ export default function CultureScreen() {
       <ScrollView style={styles.scrollView}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Культура Камчатки</Text>
-          <Text style={styles.headerSubtitle}>
-            Познакомьтесь с традициями и ремеслами коренных народов
-          </Text>
+          <Text style={styles.headerTitle}>{t('culture.title')}</Text>
+          <Text style={styles.headerSubtitle}>{t('culture.subtitle')}</Text>
         </View>
 
         {/* Master Classes Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Мастер-классы</Text>
+            <Text style={styles.sectionTitle}>{t('culture.actions.masters')}</Text>
             <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push('/culture/masters' as any)}>
               <Text style={styles.seeAllText}>Все</Text>
               <Ionicons name="chevron-forward" size={16} color="#0891b2" />
@@ -100,22 +100,22 @@ export default function CultureScreen() {
           <View style={styles.actionGrid}>
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="map" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Карта ремесел</Text>
+              <Text style={styles.actionText}>{t('culture.actions.map')}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="calendar" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Календарь событий</Text>
+              <Text style={styles.actionText}>{t('culture.actions.calendar')}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="people" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Мастера</Text>
+              <Text style={styles.actionText}>{t('culture.actions.masters')}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="gift" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Сувениры</Text>
+              <Text style={styles.actionText}>{t('culture.actions.souvenirs')}</Text>
             </TouchableOpacity>
           </View>
         </View>

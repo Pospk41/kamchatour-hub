@@ -71,6 +71,10 @@ export default function HomeScreen() {
           <Text style={styles.sectionTitle}>Быстрые действия</Text>
           
           <View style={styles.actionGrid}>
+            <View style={styles.actionItem} onTouchEnd={() => router.push('/emergency/sos' as any)}>
+              <Ionicons name="alert" size={24} color="#ef4444" />
+              <Text style={styles.actionText}>SOS</Text>
+            </View>
             <View style={styles.actionItem} onTouchEnd={() => router.push('/culture')}>
               <Ionicons name="people" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Культура</Text>
