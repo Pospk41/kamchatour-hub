@@ -1,42 +1,41 @@
 {
   "expo": {
     "name": "kamchatka",
-    "slug": "kamchatka",
-    "version": "1.0.0",
+    "slug": "kamchatour-hub",
+    "version": "0.1.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "scheme": "kamchatka",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "2",
+      "bundleIdentifier": "com.posservis.kamchatourhub",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
+      "versionCode": 2,
+      "package": "com.posservis.kamchatourhub"
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "static"
     },
     "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "34abf0cb-fdf3-48b7-b93a-129e3ba369b0"
+      }
+    },
+    "owner": "pos-servis"
   }
 }
