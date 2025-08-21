@@ -20,6 +20,7 @@ export default function AgentIndex() {
 					<View style={styles.row}>
 						<TouchableOpacity style={styles.link} onPress={() => router.push(`/agent/tours/${t.id}/edit` as any)}><Text style={styles.linkText}>Редактировать</Text></TouchableOpacity>
 						<TouchableOpacity style={styles.link} onPress={() => router.push(`/agent/tours/${t.id}/calendar` as any)}><Text style={styles.linkText}>Календарь</Text></TouchableOpacity>
+						<TouchableOpacity style={styles.link} onPress={() => router.push(`/tours/${t.id}` as any)}><Text style={styles.linkText}>Предпросмотр</Text></TouchableOpacity>
 					</View>
 				</View>
 			))}
