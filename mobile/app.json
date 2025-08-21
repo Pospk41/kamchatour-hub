@@ -24,7 +24,8 @@
     },
     "updates": {
       "checkAutomatically": "ON_LOAD",
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/34abf0cb-fdf3-48b7-b93a-129e3ba369b0"
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -34,7 +35,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "0b57e999-b0af-4bc0-9417-923f9d7e7ea8"
+        "projectId": "34abf0cb-fdf3-48b7-b93a-129e3ba369b0"
       }
     }
   }
