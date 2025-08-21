@@ -3,66 +3,14 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useCraftMasters, useCulturalEvents } from '../../hooks/useCulture';
+import { useTranslation } from 'react-i18next';
 
 export default function CultureScreen() {
   const router = useRouter();
-
-  const masterClasses = [
-    {
-      id: '1',
-      title: 'Резьба по кости',
-      master: 'Алексей Петров',
-      village: 'Усть-Камчатск',
-      duration: '2 часа',
-      price: 1500,
-      image: '🦴',
-    },
-    {
-      id: '2',
-      title: 'Плетение из бересты',
-      master: 'Мария Сидорова',
-      village: 'Елизово',
-      duration: '3 часа',
-      price: 2000,
-      image: '🌿',
-    },
-    {
-      id: '3',
-      title: 'Изготовление амулетов',
-      master: 'Виктор Козлов',
-      village: 'Петропавловск-Камчатский',
-      duration: '1.5 часа',
-      price: 1200,
-      image: '🔮',
-    },
-  ];
-
-  const events = [
-    {
-      id: '1',
-      title: 'Фестиваль коренных народов',
-      date: '15-17 августа',
-      location: 'Петропавловск-Камчатский',
-      type: 'Фестиваль',
-      image: '🎭',
-    },
-    {
-      id: '2',
-      title: 'День рыбака',
-      date: '12 июля',
-      location: 'Усть-Камчатск',
-      type: 'Праздник',
-      image: '🐟',
-    },
-    {
-      id: '3',
-      title: 'Выставка камчатских ремесел',
-      date: '20-25 сентября',
-      location: 'Елизово',
-      type: 'Выставка',
-      image: '🎨',
-    },
-  ];
+  const { data: masterClasses = [], isLoading: mastersLoading } = useCraftMasters();
+  const { data: events = [], isLoading: eventsLoading } = useCulturalEvents();
+  const { t } = useTranslation();
 
   const renderMasterClass = (item: any) => (
     <TouchableOpacity key={item.id} style={styles.masterClassCard}>
@@ -110,34 +58,40 @@ export default function CultureScreen() {
       <ScrollView style={styles.scrollView}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Культура Камчатки</Text>
-          <Text style={styles.headerSubtitle}>
-            Познакомьтесь с традициями и ремеслами коренных народов
-          </Text>
+          <Text style={styles.headerTitle}>{t('culture.title')}</Text>
+          <Text style={styles.headerSubtitle}>{t('culture.subtitle')}</Text>
         </View>
 
         {/* Master Classes Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Мастер-классы</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
+            <Text style={styles.sectionTitle}>{t('culture.actions.masters')}</Text>
+            <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push('/culture/masters' as any)}>
               <Text style={styles.seeAllText}>Все</Text>
               <Ionicons name="chevron-forward" size={16} color="#0891b2" />
             </TouchableOpacity>
           </View>
-          {masterClasses.map(renderMasterClass)}
+          {mastersLoading ? (
+            <Text>Загрузка...</Text>
+          ) : (
+            masterClasses.map(renderMasterClass)
+          )}
         </View>
 
         {/* Events Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>События</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
+            <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push('/culture/events' as any)}>
               <Text style={styles.seeAllText}>Все</Text>
               <Ionicons name="chevron-forward" size={16} color="#0891b2" />
             </TouchableOpacity>
           </View>
-          {events.map(renderEvent)}
+          {eventsLoading ? (
+            <Text>Загрузка...</Text>
+          ) : (
+            events.map(renderEvent)
+          )}
         </View>
 
         {/* Quick Actions */}
@@ -146,22 +100,22 @@ export default function CultureScreen() {
           <View style={styles.actionGrid}>
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="map" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Карта ремесел</Text>
+              <Text style={styles.actionText}>{t('culture.actions.map')}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="calendar" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Календарь событий</Text>
+              <Text style={styles.actionText}>{t('culture.actions.calendar')}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="people" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Мастера</Text>
+              <Text style={styles.actionText}>{t('culture.actions.masters')}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.actionItem}>
               <Ionicons name="gift" size={24} color="#0891b2" />
-              <Text style={styles.actionText}>Сувениры</Text>
+              <Text style={styles.actionText}>{t('culture.actions.souvenirs')}</Text>
             </TouchableOpacity>
           </View>
         </View>
