@@ -28,6 +28,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, Session
 from passlib.context import CryptContext
+import httpx
 
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-change-me")
@@ -281,6 +282,11 @@ class GuideActivityPublic(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class TildaImportRequest(BaseModel):
+    project_ids: Optional[list[int]] = None
+    publish: bool = True
 
 
 def verify_password(plain_password: str, password_hash: str) -> bool:
@@ -858,6 +864,72 @@ def public_list_activities(db: Annotated[Session, Depends(get_db)], limit: int =
     if q:
         query = query.filter(GuideActivity.title.ilike(f"%{q}%"))
     return query.order_by(GuideActivity.created_at.desc()).limit(min(max(limit, 1), 500)).all()
+
+
+# Admin: import from Tilda (prototype - requires env credentials)
+@app.post("/admin/import/tilda")
+def admin_import_tilda(
+    payload: TildaImportRequest,
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(require_role("admin"))],
+):
+    public_key = os.getenv("TILDA_PUBLIC_KEY")
+    secret_key = os.getenv("TILDA_SECRET_KEY")
+    if not public_key or not secret_key:
+        raise HTTPException(status_code=400, detail="Tilda credentials not configured")
+    try:
+        # Minimal: fetch projects then pages
+        with httpx.Client(timeout=30) as client:
+            projects = client.get(
+                "https://api.tilda.cc/v1/getprojects",
+                params={"publickey": public_key, "secretkey": secret_key},
+            ).json().get("result", [])
+            imported = {"tours": 0, "activities": 0}
+            for pr in projects:
+                if payload.project_ids and int(pr.get("id", 0)) not in payload.project_ids:
+                    continue
+                pages = client.get(
+                    "https://api.tilda.cc/v1/getpageslist",
+                    params={"publickey": public_key, "secretkey": secret_key, "projectid": pr.get("id")},
+                ).json().get("result", [])
+                for pg in pages:
+                    title = pg.get("title") or pg.get("name") or "Страница"
+                    descr = pg.get("descr") or ""
+                    url = pg.get("url") or pg.get("alias") or None
+                    # Heuristic: pages with "tour" in title -> Tour, with "guide"/"activity" -> GuideActivity
+                    is_tour = "тур" in title.lower() or "tour" in title.lower()
+                    is_activity = "актив" in title.lower() or "guide" in title.lower()
+                    if is_tour:
+                        t = Tour(
+                            operator_id=current_user.id,
+                            title=title[:200],
+                            description=f"{descr}\n{url or ''}",
+                            price=0.0,
+                            currency="RUB",
+                            duration_hours=None,
+                            difficulty=None,
+                            location=None,
+                            images=[],
+                            is_active=bool(payload.publish),
+                        )
+                        db.add(t)
+                        imported["tours"] += 1
+                    elif is_activity:
+                        a = GuideActivity(
+                            guide_id=current_user.id,
+                            title=title[:200],
+                            description=f"{descr}\n{url or ''}",
+                            price=None,
+                            duration_hours=None,
+                            tags=[],
+                            is_active=bool(payload.publish),
+                        )
+                        db.add(a)
+                        imported["activities"] += 1
+            db.commit()
+            return {"imported": imported}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Tilda import failed: {e}")
 
 
 # Discover counterpart users
