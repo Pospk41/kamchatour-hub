@@ -108,17 +108,19 @@ hooks/                # Кастомные хуки
 ## 🔧 Конфигурация
 
 ### Переменные окружения
-Создайте файл `.env` в корне проекта:
+Создайте файл `.env` в корне проекта (смотри также `.env.example`):
 ```env
-# API Keys (для будущего использования)
-SUPABASE_URL=your_supabase_url
-SUPABASE_ANON_KEY=your_supabase_key
+EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# server-side only (не кладите в клиент)
+# DATABASE_URL=postgresql://...:6543/postgres?pgbouncer=true&sslmode=require
+# DIRECT_URL=postgresql://...:5432/postgres?sslmode=require
+```
 
-# Emergency Services
-EMERGENCY_API_KEY=your_emergency_api_key
-
-# Weather API
-WEATHER_API_KEY=your_weather_api_key
+### Настройка Supabase (клиент)
+Клиент настроен в `lib/supabase.ts` и использует `AsyncStorage` для сессий:
+```ts
+import { supabase } from './lib/supabase';
 ```
 
 ### Настройка геолокации
