@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocation } from '../../hooks/useLocation';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
   const { user, signOut, isLoading, signInAsGuest } = useAuth() as any;
@@ -200,7 +201,7 @@ export default function ProfileScreen() {
             Войдите в аккаунт для доступа к профилю
           </Text>
           <View style={{gap:12, width:'100%', alignItems:'center'}}>
-            <TouchableOpacity style={styles.signInButton}>
+            <TouchableOpacity style={styles.signInButton} onPress={() => router.push('/auth')}>
               <Text style={styles.signInButtonText}>Войти</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.signInButton, {backgroundColor:'#f1f5f9'}]} onPress={signInAsGuest}>
