@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signIn as authSignIn, signUp as authSignUp, signOut as authSignOut } from '../lib/auth';
+import { signInAsGuest as authSignInAsGuest } from '../lib/auth';
 
 export interface User {
   id: string;
@@ -9,6 +10,7 @@ export interface User {
   phone?: string;
   emergencyContacts?: EmergencyContact[];
   preferences?: UserPreferences;
+  isGuest?: boolean;
 }
 
 export interface EmergencyContact {
@@ -30,6 +32,7 @@ interface AuthContextType {
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string) => Promise<void>;
+  signInAsGuest: () => Promise<void>;
   signOut: () => Promise<void>;
   updateUser: (updates: Partial<User>) => Promise<void>;
   addEmergencyContact: (contact: Omit<EmergencyContact, 'id'>) => Promise<void>;
@@ -101,6 +104,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await saveUserToStorage(userData);
     } catch (error) {
       console.error('Sign up error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const signInAsGuest = async () => {
+    try {
+      setIsLoading(true);
+      const guestUser = await authSignInAsGuest();
+      setUser(guestUser);
+      await saveUserToStorage(guestUser);
+    } catch (error) {
+      console.error('Guest sign in error:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -180,6 +197,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isLoading,
     signIn,
     signUp,
+    signInAsGuest,
     signOut,
     updateUser,
     addEmergencyContact,
