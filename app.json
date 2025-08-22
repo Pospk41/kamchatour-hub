@@ -33,6 +33,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "10119ebe-a396-4ada-a42b-7892efa946bc"
+      }
+    },
+    "owner": "pos-servis"
   }
 }
