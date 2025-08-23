@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase, isSupabaseConfigured } from './supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User as AppUser } from '../contexts/AuthContext';
 
@@ -10,6 +10,7 @@ const mapUser = (authUser: any): AppUser => ({
 });
 
 export const sbSignIn = async (email: string, password: string): Promise<AppUser> => {
+  if (!isSupabaseConfigured() || !supabase) throw new Error('Supabase не сконфигурирован');
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error || !data.session?.user) {
     throw new Error(error?.message || 'Не удалось войти');
@@ -20,6 +21,7 @@ export const sbSignIn = async (email: string, password: string): Promise<AppUser
 };
 
 export const sbSignUp = async (email: string, password: string, name: string): Promise<AppUser> => {
+  if (!isSupabaseConfigured() || !supabase) throw new Error('Supabase не сконфигурирован');
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -28,18 +30,20 @@ export const sbSignUp = async (email: string, password: string, name: string): P
   if (error || !data.user) {
     throw new Error(error?.message || 'Не удалось зарегистрироваться');
   }
-  // Подтверждение email может быть включено — сразу сессии может не быть
   const user = mapUser(data.user);
   await AsyncStorage.setItem('user', JSON.stringify(user));
   return user;
 };
 
 export const sbSignOut = async (): Promise<void> => {
-  await supabase.auth.signOut();
+  if (isSupabaseConfigured() && supabase) {
+    await supabase.auth.signOut();
+  }
   await AsyncStorage.removeItem('user');
 };
 
 export const sbGetCurrentUser = async (): Promise<AppUser | null> => {
+  if (!isSupabaseConfigured() || !supabase) return null;
   const { data } = await supabase.auth.getUser();
   const authUser = data.user;
   if (!authUser) return null;
