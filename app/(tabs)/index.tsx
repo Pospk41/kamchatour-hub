@@ -39,6 +39,24 @@ export default function HomeScreen() {
     );
   };
 
+  const [apiStatus, setApiStatus] = React.useState<string>('ожидание');
+  const [apiUrl] = React.useState<string>(`${process.env.EXPO_PUBLIC_API_BASE_URL || ''}/todos/1`);
+
+  const testApi = async () => {
+    try {
+      const started = Date.now();
+      const res = await fetch(apiUrl);
+      const ms = Date.now() - started;
+      setApiStatus(`HTTP ${res.status} за ${ms}мс`);
+    } catch (e) {
+      setApiStatus('ошибка запроса');
+    }
+  };
+
+  React.useEffect(() => {
+    testApi();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -86,7 +104,7 @@ export default function HomeScreen() {
               <Text style={styles.actionText}>Бронирование</Text>
             </View>
             
-            <View style={styles.actionItem} onTouchEnd={() => router.push('/emergency')}>
+            <View style={styles.actionItem} onTouchEnd={() => router.push('/emergency' as any)}>
               <Ionicons name="medical" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Убежища</Text>
             </View>
@@ -101,6 +119,13 @@ export default function HomeScreen() {
             <Text style={styles.weatherText}>+15°C</Text>
             <Text style={styles.weatherDescription}>Переменная облачность</Text>
           </View>
+        </View>
+
+        {/* API Smoke Test */}
+        <View style={{ padding: 20 }}>
+          <Text style={styles.sectionTitle}>API тест</Text>
+          <Text style={{ color: '#64748b', marginBottom: 8 }}>URL: {apiUrl || 'не задан'}</Text>
+          <Text style={{ color: '#1e293b', fontWeight: '600' }}>Статус: {apiStatus}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

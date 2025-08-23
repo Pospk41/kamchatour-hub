@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { signIn as authSignIn, signUp as authSignUp, signOut as authSignOut } from '../lib/auth';
+import { sbSignIn as authSignIn, sbSignUp as authSignUp, sbSignOut as authSignOut } from '../lib/authSupabase';
 
 export interface User {
   id: string;
