@@ -4,19 +4,11 @@
   "builds": [
     { "src": "dist/**", "use": "@vercel/static" }
   ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
-      ]
-    }
-  ],
-  "redirects": [
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "www.tourhab.ru" }], "destination": "https://tourhab.ru/$1", "statusCode": 308 }
-  ],
-  "rewrites": [
-    { "source": "/", "destination": "/dist/index.html" },
-    { "source": "/(.*)", "destination": "/dist/$1" }
+  "routes": [
+    { "src": "(.*)", "has": [{ "type": "host", "value": "www.tourhab.ru" }], "status": 308, "headers": { "Location": "https://tourhab.ru$1" } },
+    { "src": "/_expo/(.*)", "dest": "/dist/_expo/$1" },
+    { "src": "/(.*)\\.(js|css|png|jpg|jpeg|svg|ico|map|json|txt|woff|woff2)", "dest": "/dist/$1.$2" },
+    { "src": "/", "dest": "/dist/index.html" },
+    { "src": "/(.+)", "dest": "/dist/$1/index.html" }
   ]
 }
