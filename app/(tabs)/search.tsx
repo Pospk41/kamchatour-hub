@@ -1,17 +1,29 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { searchTours, SearchParams } from '../../lib/search';
 import { Tour } from '../../lib/tours';
+import { searchToursSupabase } from '../../lib/searchSupabase';
 
 export default function SearchScreen() {
   const [q, setQ] = useState('');
   const [difficulty, setDifficulty] = useState<string | null>(null);
   const [sort, setSort] = useState<SearchParams['sort']>('relevance');
+  const [items, setItems] = useState<Tour[]>([]);
 
-  const items: Tour[] = useMemo(() => {
-    return searchTours({ q, difficulty: difficulty ? [difficulty as any] : [], sort });
+  useEffect(() => {
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      const params: SearchParams = { q, difficulty: difficulty ? [difficulty as any] : [], sort };
+      try {
+        const res = await searchToursSupabase(params);
+        if (!controller.signal.aborted) setItems(res);
+      } catch {
+        if (!controller.signal.aborted) setItems(searchTours(params));
+      }
+    }, 300);
+    return () => { controller.abort(); clearTimeout(timer); };
   }, [q, difficulty, sort]);
 
   return (
