@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocation } from '../../hooks/useLocation';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
   const { user, signOut, isLoading } = useAuth();
@@ -11,6 +12,7 @@ export default function ProfileScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [locationSharing, setLocationSharing] = useState(true);
   const [emergencyAlerts, setEmergencyAlerts] = useState(true);
+  const router = useRouter();
 
   const handleSignOut = () => {
     Alert.alert(
@@ -199,7 +201,7 @@ export default function ProfileScreen() {
           <Text style={styles.notAuthSubtitle}>
             Войдите в аккаунт для доступа к профилю
           </Text>
-          <TouchableOpacity style={styles.signInButton}>
+          <TouchableOpacity style={styles.signInButton} onPress={() => router.push('/auth' as any)}>
             <Text style={styles.signInButtonText}>Войти</Text>
           </TouchableOpacity>
         </View>

@@ -11,8 +11,6 @@ export default function RootLayout() {
         <EmergencyProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="auth" options={{ headerShown: false }} />
-            <Stack.Screen name="emergency" options={{ headerShown: false }} />
           </Stack>
           <StatusBar style="auto" />
         </EmergencyProvider>
