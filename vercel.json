@@ -4,9 +4,19 @@
   "builds": [
     { "src": "dist/**", "use": "@vercel/static" }
   ],
-  "routes": [
-    { "src": "^/(.*)", "headers": { "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload" } },
-    { "src": "(.*)", "has": [{ "type": "host", "value": "www.tourhab.ru" }], "status": 308, "headers": { "Location": "https://tourhab.ru$1" } },
-    { "src": "/(.*)", "dest": "/dist/$1" }
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+      ]
+    }
+  ],
+  "redirects": [
+    { "source": "/(.*)", "has": [{ "type": "host", "value": "www.tourhab.ru" }], "destination": "https://tourhab.ru/$1", "statusCode": 308 }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/dist/index.html" },
+    { "source": "/(.*)", "destination": "/dist/$1" }
   ]
 }
