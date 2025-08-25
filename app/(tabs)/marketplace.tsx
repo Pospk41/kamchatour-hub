@@ -20,7 +20,7 @@ export default function MarketplaceScreen() {
       data={data as MarketplaceItem[]}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <Pressable style={styles.card} onPress={() => router.push({ pathname: '/marketplace/[id]' as const, params: { id: item.id } })}>
+        <Pressable style={styles.card} onPress={() => router.push(`/marketplace/${item.id}` as never)}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.subtitle}>{item.short}</Text>
           <Text style={styles.price}>{item.price.toLocaleString('ru-RU')} {item.currency}</Text>

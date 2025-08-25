@@ -13,7 +13,8 @@
     "build": "expo export",
     "scaffold:kst": "node ./scripts/scaffold-kst.js",
     "manifest": "node ./scripts/generate-structure-manifest.js",
-    "images:placeholders": "node ./scripts/generate-image-placeholders.js"
+    "images:placeholders": "node ./scripts/generate-image-placeholders.js",
+    "routes:import": "node ./scripts/import-kamgov-routes.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
