@@ -1,6 +1,6 @@
 {
   "project": "workspace",
-  "generatedAt": "2025-08-25T10:33:01.381Z",
+  "generatedAt": "2025-08-25T10:56:06.078Z",
   "coreFiles": [
     {
       "name": ".env",
@@ -20,7 +20,7 @@
       "name": "package.json",
       "type": "file",
       "path": "package.json",
-      "size": 1699,
+      "size": 1775,
       "ext": ".json"
     },
     {
@@ -83,10 +83,31 @@
               "ext": ".md"
             },
             {
+              "name": "adaptive-icon.png",
+              "type": "file",
+              "path": "assets/images/adaptive-icon.png",
+              "size": 68,
+              "ext": ".png"
+            },
+            {
               "name": "bears",
               "type": "dir",
               "path": "assets/images/bears",
               "children": []
+            },
+            {
+              "name": "favicon.png",
+              "type": "file",
+              "path": "assets/images/favicon.png",
+              "size": 68,
+              "ext": ".png"
+            },
+            {
+              "name": "icon.png",
+              "type": "file",
+              "path": "assets/images/icon.png",
+              "size": 68,
+              "ext": ".png"
             },
             {
               "name": "paratunka",
@@ -95,12 +116,26 @@
               "children": []
             },
             {
+              "name": "splash-icon.png",
+              "type": "file",
+              "path": "assets/images/splash-icon.png",
+              "size": 68,
+              "ext": ".png"
+            },
+            {
               "name": "volcanoes",
               "type": "dir",
               "path": "assets/images/volcanoes",
               "children": []
             }
           ]
+        },
+        {
+          "name": "structure-manifest.json",
+          "type": "file",
+          "path": "assets/structure-manifest.json",
+          "size": 17518,
+          "ext": ".json"
         },
         {
           "name": "translations",
@@ -720,6 +755,13 @@
           "type": "dir",
           "path": "scripts/data-import",
           "children": []
+        },
+        {
+          "name": "generate-image-placeholders.js",
+          "type": "file",
+          "path": "scripts/generate-image-placeholders.js",
+          "size": 809,
+          "ext": ".js"
         },
         {
           "name": "generate-structure-manifest.js",
