@@ -90,6 +90,11 @@ export default function HomeScreen() {
               <Ionicons name="medical" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Убежища</Text>
             </View>
+
+            <View style={styles.actionItem} onTouchEnd={() => router.push('/structure')}>
+              <Ionicons name="folder" size={24} color="#0891b2" />
+              <Text style={styles.actionText}>Структура</Text>
+            </View>
           </View>
         </View>
 
