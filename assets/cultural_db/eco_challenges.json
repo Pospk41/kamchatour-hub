@@ -1,0 +1,5 @@
+[
+  { "id": "c1", "title": "Собери и вынеси 1 пакет мусора", "points": 20, "category": "waste" },
+  { "id": "c2", "title": "Пройди по экотропе 5 км", "points": 30, "category": "trails" },
+  { "id": "c3", "title": "Отметь 3 вида птиц в дневнике", "points": 25, "category": "wildlife" }
+]

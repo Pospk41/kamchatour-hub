@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocation } from '../../hooks/useLocation';
 
 export default function EcoScreen() {
   const { location } = useLocation();
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const ecoData = {
@@ -197,12 +199,12 @@ export default function EcoScreen() {
         <View style={styles.quickActions}>
           <Text style={styles.sectionTitle}>Быстрые действия</Text>
           <View style={styles.actionGrid}>
-            <TouchableOpacity style={styles.actionItem}>
+            <TouchableOpacity style={styles.actionItem} onPress={() => router.push('/eco/history' as never)}>
               <Ionicons name="leaf" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Эко-отчет</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.actionItem}>
+            <TouchableOpacity style={styles.actionItem} onPress={() => router.push('/eco/challenges' as never)}>
               <Ionicons name="camera" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Фото природы</Text>
             </TouchableOpacity>
