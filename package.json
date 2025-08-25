@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "build": "expo export"
+    "build": "expo export",
+    "scaffold:kst": "node ./scripts/scaffold-kst.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
