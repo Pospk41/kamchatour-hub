@@ -1,0 +1,19 @@
+[
+  {
+    "id": "kamchatka-pro",
+    "name": "KamchatkaPro",
+    "rating": 4.8,
+    "reviews": 126,
+    "badges": ["safety", "eco"],
+    "contact": { "site": "https://kamchatkapro.example", "phone": "+7 999 000 00 00" }
+  },
+  {
+    "id": "vulcan-club",
+    "name": "Vulcan Club",
+    "rating": 4.6,
+    "reviews": 84,
+    "badges": ["culture"],
+    "contact": { "site": "https://vulcanclub.example", "phone": "+7 999 111 11 11" }
+  }
+]
+
