@@ -23,6 +23,7 @@ export default function RootLayout() {
               <Stack.Screen name="auth" options={{ headerShown: false }} />
               <Stack.Screen name="emergency" options={{ headerShown: false }} />
               <Stack.Screen name="structure" options={{ title: 'Структура' }} />
+              <Stack.Screen name="agent" options={{ title: 'Туроператор' }} />
             </Stack>
             <StatusBar style="auto" />
           </QueryClientProvider>

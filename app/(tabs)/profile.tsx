@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocation } from '../../hooks/useLocation';
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const { user, signOut, isLoading } = useAuth();
   const { location, requestPermissions } = useLocation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -141,6 +143,12 @@ export default function ProfileScreen() {
           value: 'Обработка данных',
           action: 'navigate',
         },
+        {
+          icon: 'briefcase',
+          title: 'Раздел туроператора',
+          value: 'Управление турами и заказами',
+          action: 'agent',
+        },
       ],
     },
   ];
@@ -154,6 +162,8 @@ export default function ProfileScreen() {
           Alert.alert('Информация', `${item.title} - функция в разработке`);
         } else if (item.action === 'edit') {
           Alert.alert('Редактирование', `Редактирование ${item.title.toLowerCase()} - функция в разработке`);
+        } else if (item.action === 'agent') {
+          router.push('/agent' as never);
         }
       }}
     >
