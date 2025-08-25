@@ -1,10 +1,12 @@
 {
   "expo": {
-    "owner": "PosPk",
-    "name": "kamchatka",
-    "slug": "kamchatka",
+    "owner": "pos-servis",
+    "name": "kamchatour-hub",
+    "slug": "kamchatour-hub",
     "version": "1.0.0",
-    "runtimeVersion": { "policy": "sdkVersion" },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "kamchatka",
@@ -39,6 +41,15 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "34abf0cb-fdf3-48b7-b93a-129e3ba369b0"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/34abf0cb-fdf3-48b7-b93a-129e3ba369b0"
     }
   }
 }
