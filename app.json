@@ -5,11 +5,6 @@
     "slug": "kamchatka",
     "version": "1.0.0",
     "runtimeVersion": { "policy": "sdkVersion" },
-    "extra": {
-      "eas": {
-        "projectId": "d3d5e7a1-0000-4000-9000-000000000000"
-      }
-    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "kamchatka",
