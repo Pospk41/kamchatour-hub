@@ -1,0 +1,28 @@
+[
+  {
+    "id": "tour-avacha-1",
+    "title": "Восхождение на Авачу",
+    "price": 12000,
+    "currency": "RUB",
+    "durationHours": 8,
+    "rating": 4.8,
+    "category": "volcano",
+    "provider": "KamchatkaPro",
+    "short": "Однодневный трек на вулкан Авача",
+    "images": [],
+    "slots": 12
+  },
+  {
+    "id": "paratunka-spa-1",
+    "title": "Купание в источниках Паратунки",
+    "price": 3500,
+    "currency": "RUB",
+    "durationHours": 3,
+    "rating": 4.6,
+    "category": "relax",
+    "provider": "HotSprings",
+    "short": "Термальные бассейны и отдых",
+    "images": [],
+    "slots": 20
+  }
+]
