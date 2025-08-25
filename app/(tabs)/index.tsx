@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -57,10 +57,10 @@ export default function HomeScreen() {
         {/* Emergency SOS Button */}
         <View style={styles.emergencySection}>
           <Text style={styles.sectionTitle}>Безопасность</Text>
-          <View style={styles.sosButton} onTouchEnd={handleEmergency}>
+          <Pressable style={styles.sosButton} onPress={handleEmergency}>
             <Ionicons name="warning" size={32} color="#ffffff" />
             <Text style={styles.sosText}>SOS</Text>
-          </View>
+          </Pressable>
           <Text style={styles.sosDescription}>
             Нажмите в экстренной ситуации
           </Text>
@@ -71,30 +71,30 @@ export default function HomeScreen() {
           <Text style={styles.sectionTitle}>Быстрые действия</Text>
           
           <View style={styles.actionGrid}>
-            <View style={styles.actionItem} onTouchEnd={() => router.push('/culture')}>
+            <Pressable style={styles.actionItem} onPress={() => router.push('/culture')}>
               <Ionicons name="people" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Культура</Text>
-            </View>
+            </Pressable>
             
-            <View style={styles.actionItem} onTouchEnd={() => router.push('/eco')}>
+            <Pressable style={styles.actionItem} onPress={() => router.push('/eco')}>
               <Ionicons name="leaf" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Экология</Text>
-            </View>
+            </Pressable>
             
-            <View style={styles.actionItem} onTouchEnd={() => router.push('/booking')}>
+            <Pressable style={styles.actionItem} onPress={() => router.push('/booking')}>
               <Ionicons name="calendar" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Бронирование</Text>
-            </View>
+            </Pressable>
             
-            <View style={styles.actionItem} onTouchEnd={() => router.push('/emergency')}>
+            <Pressable style={styles.actionItem} onPress={() => router.push('/emergency')}>
               <Ionicons name="medical" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Убежища</Text>
-            </View>
+            </Pressable>
 
-            <View style={styles.actionItem} onTouchEnd={() => router.push('/structure')}>
+            <Pressable style={styles.actionItem} onPress={() => router.push('/structure')}>
               <Ionicons name="folder" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Структура</Text>
-            </View>
+            </Pressable>
           </View>
         </View>
 

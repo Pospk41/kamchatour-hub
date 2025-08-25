@@ -28,7 +28,6 @@ type Manifest = {
 export default function StructureScreen() {
   const manifest: Manifest = useMemo(() => {
     // Using require to avoid TS resolveJsonModule requirement
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const data = require('../assets/structure-manifest.json');
     return data as Manifest;
   }, []);
