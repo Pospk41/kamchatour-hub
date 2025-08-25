@@ -1,0 +1,741 @@
+{
+  "project": "workspace",
+  "generatedAt": "2025-08-25T10:33:01.381Z",
+  "coreFiles": [
+    {
+      "name": ".env",
+      "type": "file",
+      "path": ".env",
+      "size": 27,
+      "ext": null
+    },
+    {
+      "name": "app.json",
+      "type": "file",
+      "path": "app.json",
+      "size": 938,
+      "ext": ".json"
+    },
+    {
+      "name": "package.json",
+      "type": "file",
+      "path": "package.json",
+      "size": 1699,
+      "ext": ".json"
+    },
+    {
+      "name": "tsconfig.json",
+      "type": "file",
+      "path": "tsconfig.json",
+      "size": 242,
+      "ext": ".json"
+    }
+  ],
+  "roots": [
+    {
+      "name": "assets",
+      "type": "dir",
+      "path": "assets",
+      "children": [
+        {
+          "name": "cultural_db",
+          "type": "dir",
+          "path": "assets/cultural_db",
+          "children": [
+            {
+              "name": "events.json",
+              "type": "file",
+              "path": "assets/cultural_db/events.json",
+              "size": 3,
+              "ext": ".json"
+            },
+            {
+              "name": "masters.json",
+              "type": "file",
+              "path": "assets/cultural_db/masters.json",
+              "size": 3,
+              "ext": ".json"
+            }
+          ]
+        },
+        {
+          "name": "fonts",
+          "type": "dir",
+          "path": "assets/fonts",
+          "children": []
+        },
+        {
+          "name": "icons",
+          "type": "dir",
+          "path": "assets/icons",
+          "children": []
+        },
+        {
+          "name": "images",
+          "type": "dir",
+          "path": "assets/images",
+          "children": [
+            {
+              "name": "README.md",
+              "type": "file",
+              "path": "assets/images/README.md",
+              "size": 642,
+              "ext": ".md"
+            },
+            {
+              "name": "bears",
+              "type": "dir",
+              "path": "assets/images/bears",
+              "children": []
+            },
+            {
+              "name": "paratunka",
+              "type": "dir",
+              "path": "assets/images/paratunka",
+              "children": []
+            },
+            {
+              "name": "volcanoes",
+              "type": "dir",
+              "path": "assets/images/volcanoes",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "translations",
+          "type": "dir",
+          "path": "assets/translations",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "lib",
+      "type": "dir",
+      "path": "lib",
+      "children": [
+        {
+          "name": "auth.ts",
+          "type": "file",
+          "path": "lib/auth.ts",
+          "size": 4885,
+          "ext": ".ts"
+        },
+        {
+          "name": "bear-detector.ts",
+          "type": "file",
+          "path": "lib/bear-detector.ts",
+          "size": 191,
+          "ext": ".ts"
+        },
+        {
+          "name": "ecoCalculator.ts",
+          "type": "file",
+          "path": "lib/ecoCalculator.ts",
+          "size": 64,
+          "ext": ".ts"
+        },
+        {
+          "name": "emergency.ts",
+          "type": "file",
+          "path": "lib/emergency.ts",
+          "size": 7372,
+          "ext": ".ts"
+        },
+        {
+          "name": "location.ts",
+          "type": "file",
+          "path": "lib/location.ts",
+          "size": 1270,
+          "ext": ".ts"
+        },
+        {
+          "name": "offlineManager.ts",
+          "type": "file",
+          "path": "lib/offlineManager.ts",
+          "size": 108,
+          "ext": ".ts"
+        },
+        {
+          "name": "supabase.ts",
+          "type": "file",
+          "path": "lib/supabase.ts",
+          "size": 48,
+          "ext": ".ts"
+        },
+        {
+          "name": "weatherIntegration.ts",
+          "type": "file",
+          "path": "lib/weatherIntegration.ts",
+          "size": 70,
+          "ext": ".ts"
+        }
+      ]
+    },
+    {
+      "name": "components",
+      "type": "dir",
+      "path": "components",
+      "children": [
+        {
+          "name": "ar",
+          "type": "dir",
+          "path": "components/ar",
+          "children": []
+        },
+        {
+          "name": "auth",
+          "type": "dir",
+          "path": "components/auth",
+          "children": []
+        },
+        {
+          "name": "booking",
+          "type": "dir",
+          "path": "components/booking",
+          "children": []
+        },
+        {
+          "name": "communication",
+          "type": "dir",
+          "path": "components/communication",
+          "children": []
+        },
+        {
+          "name": "culture",
+          "type": "dir",
+          "path": "components/culture",
+          "children": [
+            {
+              "name": "CraftMasterCard.tsx",
+              "type": "file",
+              "path": "components/culture/CraftMasterCard.tsx",
+              "size": 57,
+              "ext": ".tsx"
+            },
+            {
+              "name": "EventCard.tsx",
+              "type": "file",
+              "path": "components/culture/EventCard.tsx",
+              "size": 51,
+              "ext": ".tsx"
+            },
+            {
+              "name": "SouvenirARViewer.tsx",
+              "type": "file",
+              "path": "components/culture/SouvenirARViewer.tsx",
+              "size": 58,
+              "ext": ".tsx"
+            }
+          ]
+        },
+        {
+          "name": "eco",
+          "type": "dir",
+          "path": "components/eco",
+          "children": []
+        },
+        {
+          "name": "itinerary",
+          "type": "dir",
+          "path": "components/itinerary",
+          "children": []
+        },
+        {
+          "name": "kamchatka",
+          "type": "dir",
+          "path": "components/kamchatka",
+          "children": []
+        },
+        {
+          "name": "marketplace",
+          "type": "dir",
+          "path": "components/marketplace",
+          "children": []
+        },
+        {
+          "name": "safety",
+          "type": "dir",
+          "path": "components/safety",
+          "children": []
+        },
+        {
+          "name": "ui",
+          "type": "dir",
+          "path": "components/ui",
+          "children": [
+            {
+              "name": "Button.tsx",
+              "type": "file",
+              "path": "components/ui/Button.tsx",
+              "size": 48,
+              "ext": ".tsx"
+            },
+            {
+              "name": "Input.tsx",
+              "type": "file",
+              "path": "components/ui/Input.tsx",
+              "size": 47,
+              "ext": ".tsx"
+            },
+            {
+              "name": "SOSButton.tsx",
+              "type": "file",
+              "path": "components/ui/SOSButton.tsx",
+              "size": 51,
+              "ext": ".tsx"
+            }
+          ]
+        },
+        {
+          "name": "weather",
+          "type": "dir",
+          "path": "components/weather",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "contexts",
+      "type": "dir",
+      "path": "contexts",
+      "children": [
+        {
+          "name": "AuthContext.tsx",
+          "type": "file",
+          "path": "contexts/AuthContext.tsx",
+          "size": 4959,
+          "ext": ".tsx"
+        },
+        {
+          "name": "BookingContext.tsx",
+          "type": "file",
+          "path": "contexts/BookingContext.tsx",
+          "size": 448,
+          "ext": ".tsx"
+        },
+        {
+          "name": "EmergencyContext.tsx",
+          "type": "file",
+          "path": "contexts/EmergencyContext.tsx",
+          "size": 7825,
+          "ext": ".tsx"
+        },
+        {
+          "name": "LocationContext.tsx",
+          "type": "file",
+          "path": "contexts/LocationContext.tsx",
+          "size": 6531,
+          "ext": ".tsx"
+        }
+      ]
+    },
+    {
+      "name": "hooks",
+      "type": "dir",
+      "path": "hooks",
+      "children": [
+        {
+          "name": "useAuth.ts",
+          "type": "file",
+          "path": "hooks/useAuth.ts",
+          "size": 108,
+          "ext": ".ts"
+        },
+        {
+          "name": "useBearAlert.ts",
+          "type": "file",
+          "path": "hooks/useBearAlert.ts",
+          "size": 59,
+          "ext": ".ts"
+        },
+        {
+          "name": "useEmergency.ts",
+          "type": "file",
+          "path": "hooks/useEmergency.ts",
+          "size": 133,
+          "ext": ".ts"
+        },
+        {
+          "name": "useLocation.ts",
+          "type": "file",
+          "path": "hooks/useLocation.ts",
+          "size": 128,
+          "ext": ".ts"
+        }
+      ]
+    },
+    {
+      "name": "navigation",
+      "type": "dir",
+      "path": "navigation",
+      "children": [
+        {
+          "name": "AuthNavigator.tsx",
+          "type": "file",
+          "path": "navigation/AuthNavigator.tsx",
+          "size": 55,
+          "ext": ".tsx"
+        },
+        {
+          "name": "EmergencyNavigator.tsx",
+          "type": "file",
+          "path": "navigation/EmergencyNavigator.tsx",
+          "size": 60,
+          "ext": ".tsx"
+        },
+        {
+          "name": "MainNavigator.tsx",
+          "type": "file",
+          "path": "navigation/MainNavigator.tsx",
+          "size": 55,
+          "ext": ".tsx"
+        }
+      ]
+    },
+    {
+      "name": "screens",
+      "type": "dir",
+      "path": "screens",
+      "children": [
+        {
+          "name": "activities",
+          "type": "dir",
+          "path": "screens/activities",
+          "children": []
+        },
+        {
+          "name": "agent",
+          "type": "dir",
+          "path": "screens/agent",
+          "children": []
+        },
+        {
+          "name": "auth",
+          "type": "dir",
+          "path": "screens/auth",
+          "children": []
+        },
+        {
+          "name": "booking",
+          "type": "dir",
+          "path": "screens/booking",
+          "children": []
+        },
+        {
+          "name": "checklists",
+          "type": "dir",
+          "path": "screens/checklists",
+          "children": []
+        },
+        {
+          "name": "culture",
+          "type": "dir",
+          "path": "screens/culture",
+          "children": [
+            {
+              "name": "CraftVillagesMap.tsx",
+              "type": "file",
+              "path": "screens/culture/CraftVillagesMap.tsx",
+              "size": 66,
+              "ext": ".tsx"
+            },
+            {
+              "name": "EventCalendarScreen.tsx",
+              "type": "file",
+              "path": "screens/culture/EventCalendarScreen.tsx",
+              "size": 69,
+              "ext": ".tsx"
+            },
+            {
+              "name": "MasterClassScreen.tsx",
+              "type": "file",
+              "path": "screens/culture/MasterClassScreen.tsx",
+              "size": 67,
+              "ext": ".tsx"
+            },
+            {
+              "name": "SouvenirMarket.tsx",
+              "type": "file",
+              "path": "screens/culture/SouvenirMarket.tsx",
+              "size": 64,
+              "ext": ".tsx"
+            }
+          ]
+        },
+        {
+          "name": "eco",
+          "type": "dir",
+          "path": "screens/eco",
+          "children": []
+        },
+        {
+          "name": "itinerary",
+          "type": "dir",
+          "path": "screens/itinerary",
+          "children": []
+        },
+        {
+          "name": "main",
+          "type": "dir",
+          "path": "screens/main",
+          "children": []
+        },
+        {
+          "name": "marketplace",
+          "type": "dir",
+          "path": "screens/marketplace",
+          "children": []
+        },
+        {
+          "name": "onboarding",
+          "type": "dir",
+          "path": "screens/onboarding",
+          "children": []
+        },
+        {
+          "name": "shelters",
+          "type": "dir",
+          "path": "screens/shelters",
+          "children": []
+        },
+        {
+          "name": "training",
+          "type": "dir",
+          "path": "screens/training",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "services",
+      "type": "dir",
+      "path": "services",
+      "children": [
+        {
+          "name": "api.ts",
+          "type": "file",
+          "path": "services/api.ts",
+          "size": 63,
+          "ext": ".ts"
+        },
+        {
+          "name": "authService.ts",
+          "type": "file",
+          "path": "services/authService.ts",
+          "size": 53,
+          "ext": ".ts"
+        },
+        {
+          "name": "craftService.ts",
+          "type": "file",
+          "path": "services/craftService.ts",
+          "size": 54,
+          "ext": ".ts"
+        },
+        {
+          "name": "emergencyService.ts",
+          "type": "file",
+          "path": "services/emergencyService.ts",
+          "size": 58,
+          "ext": ".ts"
+        },
+        {
+          "name": "eventService.ts",
+          "type": "file",
+          "path": "services/eventService.ts",
+          "size": 54,
+          "ext": ".ts"
+        },
+        {
+          "name": "mapService.ts",
+          "type": "file",
+          "path": "services/mapService.ts",
+          "size": 52,
+          "ext": ".ts"
+        },
+        {
+          "name": "masterClassService.ts",
+          "type": "file",
+          "path": "services/masterClassService.ts",
+          "size": 60,
+          "ext": ".ts"
+        },
+        {
+          "name": "souvenirService.ts",
+          "type": "file",
+          "path": "services/souvenirService.ts",
+          "size": 57,
+          "ext": ".ts"
+        },
+        {
+          "name": "tourService.ts",
+          "type": "file",
+          "path": "services/tourService.ts",
+          "size": 53,
+          "ext": ".ts"
+        }
+      ]
+    },
+    {
+      "name": "types",
+      "type": "dir",
+      "path": "types",
+      "children": [
+        {
+          "name": "activity.d.ts",
+          "type": "file",
+          "path": "types/activity.d.ts",
+          "size": 53,
+          "ext": ".ts"
+        },
+        {
+          "name": "auth.d.ts",
+          "type": "file",
+          "path": "types/auth.d.ts",
+          "size": 72,
+          "ext": ".ts"
+        },
+        {
+          "name": "craft.d.ts",
+          "type": "file",
+          "path": "types/craft.d.ts",
+          "size": 74,
+          "ext": ".ts"
+        },
+        {
+          "name": "emergency.d.ts",
+          "type": "file",
+          "path": "types/emergency.d.ts",
+          "size": 82,
+          "ext": ".ts"
+        },
+        {
+          "name": "event.d.ts",
+          "type": "file",
+          "path": "types/event.d.ts",
+          "size": 74,
+          "ext": ".ts"
+        },
+        {
+          "name": "user.d.ts",
+          "type": "file",
+          "path": "types/user.d.ts",
+          "size": 51,
+          "ext": ".ts"
+        }
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "dir",
+      "path": "utils",
+      "children": [
+        {
+          "name": "constants.ts",
+          "type": "file",
+          "path": "utils/constants.ts",
+          "size": 47,
+          "ext": ".ts"
+        },
+        {
+          "name": "helpers.ts",
+          "type": "file",
+          "path": "utils/helpers.ts",
+          "size": 39,
+          "ext": ".ts"
+        },
+        {
+          "name": "seasonDetector.ts",
+          "type": "file",
+          "path": "utils/seasonDetector.ts",
+          "size": 106,
+          "ext": ".ts"
+        }
+      ]
+    },
+    {
+      "name": "features",
+      "type": "dir",
+      "path": "features",
+      "children": [
+        {
+          "name": "carbonOffset",
+          "type": "dir",
+          "path": "features/carbonOffset",
+          "children": []
+        },
+        {
+          "name": "commissionSystem",
+          "type": "dir",
+          "path": "features/commissionSystem",
+          "children": []
+        },
+        {
+          "name": "dynamicPackaging",
+          "type": "dir",
+          "path": "features/dynamicPackaging",
+          "children": []
+        },
+        {
+          "name": "ecoRating",
+          "type": "dir",
+          "path": "features/ecoRating",
+          "children": []
+        },
+        {
+          "name": "indigenousEcology",
+          "type": "dir",
+          "path": "features/indigenousEcology",
+          "children": []
+        },
+        {
+          "name": "smartRouting",
+          "type": "dir",
+          "path": "features/smartRouting",
+          "children": []
+        },
+        {
+          "name": "wildlife",
+          "type": "dir",
+          "path": "features/wildlife",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "scripts",
+      "type": "dir",
+      "path": "scripts",
+      "children": [
+        {
+          "name": "ai-training",
+          "type": "dir",
+          "path": "scripts/ai-training",
+          "children": []
+        },
+        {
+          "name": "data-import",
+          "type": "dir",
+          "path": "scripts/data-import",
+          "children": []
+        },
+        {
+          "name": "generate-structure-manifest.js",
+          "type": "file",
+          "path": "scripts/generate-structure-manifest.js",
+          "size": 2569,
+          "ext": ".js"
+        },
+        {
+          "name": "scaffold-kst.js",
+          "type": "file",
+          "path": "scripts/scaffold-kst.js",
+          "size": 8703,
+          "ext": ".js"
+        }
+      ]
+    }
+  ]
+}

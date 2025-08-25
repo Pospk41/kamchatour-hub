@@ -11,7 +11,8 @@
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
     "build": "expo export",
-    "scaffold:kst": "node ./scripts/scaffold-kst.js"
+    "scaffold:kst": "node ./scripts/scaffold-kst.js",
+    "manifest": "node ./scripts/generate-structure-manifest.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
