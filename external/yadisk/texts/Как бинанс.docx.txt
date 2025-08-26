@@ -1,0 +1,568 @@
+import React, { useState, useRef } from 'react';
+import {
+View,
+Text,
+StyleSheet,
+ScrollView,
+TouchableOpacity,
+Dimensions,
+Image,
+TextInput,
+Animated,
+FlatList
+} from 'react-native';
+const { width, height } = Dimensions.get('window');
+const HomeScreen = () => {
+const [activeTab, setActiveTab] = useState('dashboard');
+const [showSearch, setShowSearch] = useState(false);
+const [price, setPrice] = useState('');
+const scrollY = useRef(new Animated.Value(0)).current;
+// Данные для быстрого доступа
+const quickActions = [
+{ id: '1', icon: '🔥', title: 'Горячие туры', color: '#F6465D' },
+{ id: '2', icon: '🏆', title: 'Премиум', color: '#0EBF7E' },
+{ id: '3', icon: '📅', title: 'Расписание', color: '#F0B90B' },
+{ id: '4', icon: '💎', title: 'VIP-туры', color: '#2775CA' },
+];
+// Данные по турам (аналогично торговым парам)
+const tourData = [
+{
+id: '1',
+name: 'Вулканы Камчатки',
+price: '24,900 ₽',
+change: '+5.2%',
+changeType: 'up',
+volume: '142 брони',
+image: 'https://mestechkokam.ru/wp-content/uploads/2023/07/kamchatka-volcano.jpg'
+},
+{
+id: '2',
+name: 'Медвежья рыбалка',
+price: '32,500 ₽',
+change: '-2.1%',
+changeType: 'down',
+volume: '87 брони',
+image: 'https://fishingkam.ru/wp-content/uploads/2023/06/kamchatka-fishing.jpg'
+},
+{
+id: '3',
+name: 'Термальные источники',
+price: '18,200 ₽',
+change: '+12.7%',
+changeType: 'up',
+volume: '201 бронь',
+image: 'https://optim.tildacdn.com/tild6136-3038-4630-a135-633937346462/-/format/webp/noroot.png'
+},
+{
+id: '4',
+name: 'Вертолетный тур',
+price: '56,800 ₽',
+change: '+3.4%',
+changeType: 'up',
+volume: '63 брони',
+image: 'https://mestechkokam.ru/wp-content/uploads/2023/07/kamchatka-tours-1.jpg'
+},
+{
+id: '5',
+name: 'Северное сияние',
+price: '41,300 ₽',
+change: '-1.2%',
+changeType: 'down',
+volume: '98 брони',
+image: 'https://mestechkokam.ru/wp-content/uploads/2024/03/pl5_3.jpg'
+},
+];
+// Навигационные элементы
+const navItems = [
+{ id: 'dashboard', icon: '📊', label: 'Главная' },
+{ id: 'market', icon: '📈', label: 'Туры' },
+{ id: 'trade', icon: '💸', label: 'Купить' },
+{ id: 'wallet', icon: '💰', label: 'Кошелек' },
+{ id: 'profile', icon: '', label: 'Профиль' },
+];
+const headerOpacity = scrollY.interpolate({
+inputRange: [0, 100],
+outputRange: [1, 0],
+extrapolate: 'clamp'
+});
+const renderTourItem = ({ item }) => (
+<TouchableOpacity style={styles.tourItem}>
+<View style={styles.tourInfo}>
+<Image source={{ uri: item.image }} style={styles.tourImage} />
+<View>
+<Text style={styles.tourName}>{item.name}</Text>
+<Text style={styles.tourVolume}>{item.volume}</Text>
+</View>
+</View>
+<View style={styles.priceInfo}>
+<Text style={styles.tourPrice}>{item.price}</Text>
+<Text style={[
+styles.tourChange,
+item.changeType === 'up' ? styles.changeUp : styles.changeDown
+]}>
+{item.change}
+</Text>
+</View>
+</TouchableOpacity>
+);
+return (
+<View style={styles.container}>
+{/* Анимированный заголовок */}
+<Animated.View style={[styles.header, { opacity: headerOpacity }]}>
+<View style={styles.balanceContainer}>
+<Text style={styles.balanceLabel}>Ваш баланс</Text>
+<Text style={styles.balanceValue}>128,450 ₽</Text>
+<Text style={styles.balanceChange}>+12,300 ₽ (7.2%) за месяц</Text>
+</View>
+<TouchableOpacity style={styles.profileButton}>
+<Text style={styles.profileIcon}>👤</Text>
+</TouchableOpacity>
+</Animated.View>
+<ScrollView
+style={styles.scrollContainer}
+onScroll={Animated.event(
+[{ nativeEvent: { contentOffset: { y: scrollY } } }],
+{ useNativeDriver: false }
+)}
+scrollEventThrottle={16}
+>
+{/* Поисковая строка */}
+<View style={styles.searchContainer}>
+<TextInput
+style={styles.searchInput}
+placeholder="Поиск туров..."
+placeholderTextColor="#848E9C"
+onFocus={() => setShowSearch(true)}
+/>
+<TouchableOpacity style={styles.scanButton}>
+<Text style={styles.scanIcon}>📷</Text>
+</TouchableOpacity>
+</View>
+{/* Быстрые действия */}
+<View style={styles.actionsContainer}>
+{quickActions.map((action) => (
+<TouchableOpacity
+key={action.id}
+style={[styles.actionButton, { backgroundColor: action.color }]}
+>
+<Text style={styles.actionIcon}>{action.icon}</Text>
+<Text style={styles.actionText}>{action.title}</Text>
+</TouchableOpacity>
+))}
+</View>
+{/* График (заглушка) */}
+<View style={styles.chartContainer}>
+<View style={styles.chartHeader}>
+<Text style={styles.chartTitle}>Тренд туров</Text>
+<View style={styles.timeFilters}>
+<Text style={styles.timeFilterActive}>24ч</Text>
+<Text style={styles.timeFilter}>7д</Text>
+<Text style={styles.timeFilter}>30д</Text>
+<Text style={styles.timeFilter}>1г</Text>
+</View>
+</View>
+<View style={styles.chartPlaceholder}>
+<Text style={styles.chartPlaceholderText}>График популярности туров</Text>
+</View>
+</View>
+{/* Список туров */}
+<View style={styles.marketContainer}>
+<View style={styles.marketHeader}>
+<Text style={styles.marketTitle}>Рынок туров</Text>
+<Text style={styles.marketFilter}>Все</Text>
+</View>
+<View style={styles.marketTabs}>
+<Text style={styles.marketTabActive}>Избранное</Text>
+<Text style={styles.marketTab}>Топ</Text>
+<Text style={styles.marketTab}>Новые</Text>
+</View>
+<View style={styles.marketColumns}>
+<Text style={styles.columnHeader}>ТУР</Text>
+<Text style={[styles.columnHeader, { textAlign: 'right' }]}>ЦЕНА</Text>
+<Text style={[styles.columnHeader, { textAlign: 'right' }]}>ИЗМЕНЕНИЕ</Text>
+</View>
+<FlatList
+data={tourData}
+renderItem={renderTourItem}
+keyExtractor={item => item.id}
+scrollEnabled={false}
+/>
+</View>
+{/* Промо-блок */}
+<View style={styles.promoContainer}>
+<Text style={styles.promoTitle}>Получите +15% кешбэка</Text>
+<Text style={styles.promoText}>На первый тур при оплате криптовалютой</Text>
+<TouchableOpacity style={styles.promoButton}>
+<Text style={styles.promoButtonText}>Активировать</Text>
+</TouchableOpacity>
+</View>
+</ScrollView>
+{/* Нижняя навигация */}
+<View style={styles.navBar}>
+{navItems.map((item) => (
+<TouchableOpacity
+key={item.id}
+style={styles.navItem}
+onPress={() => setActiveTab(item.id)}
+>
+<Text style={[
+styles.navIcon,
+activeTab === item.id ? styles.navIconActive : styles.navIconInactive
+]}>
+{item.icon}
+</Text>
+<Text style={[
+styles.navLabel,
+activeTab === item.id ? styles.navLabelActive : styles.navLabelInactive
+]}>
+{item.label}
+</Text>
+</TouchableOpacity>
+))}
+</View>
+</View>
+);
+};
+const styles = StyleSheet.create({
+container: {
+flex: 1,
+backgroundColor: '#0B0E11',
+},
+header: {
+position: 'absolute',
+top: 0,
+left: 0,
+right: 0,
+zIndex: 100,
+paddingTop: 50,
+paddingHorizontal: 16,
+paddingBottom: 20,
+backgroundColor: '#0B0E11',
+borderBottomWidth: 1,
+borderBottomColor: '#1E2329',
+flexDirection: 'row',
+justifyContent: 'space-between',
+alignItems: 'center',
+},
+balanceContainer: {
+flex: 1,
+},
+balanceLabel: {
+color: '#848E9C',
+fontSize: 13,
+marginBottom: 4,
+},
+balanceValue: {
+color: '#EAECEF',
+fontSize: 24,
+fontWeight: '600',
+marginBottom: 4,
+},
+balanceChange: {
+color: '#0EBF7E',
+fontSize: 13,
+},
+profileButton: {
+width: 40,
+height: 40,
+borderRadius: 20,
+backgroundColor: '#1E2329',
+justifyContent: 'center',
+alignItems: 'center',
+},
+profileIcon: {
+fontSize: 20,
+color: '#EAECEF',
+},
+scrollContainer: {
+flex: 1,
+paddingTop: 150,
+},
+searchContainer: {
+flexDirection: 'row',
+paddingHorizontal: 16,
+marginBottom: 16,
+},
+searchInput: {
+flex: 1,
+height: 48,
+backgroundColor: '#1E2329',
+borderRadius: 10,
+paddingHorizontal: 16,
+color: '#EAECEF',
+fontSize: 16,
+borderWidth: 1,
+borderColor: '#313843',
+},
+scanButton: {
+width: 48,
+height: 48,
+borderRadius: 10,
+backgroundColor: '#1E2329',
+marginLeft: 8,
+justifyContent: 'center',
+alignItems: 'center',
+borderWidth: 1,
+borderColor: '#313843',
+},
+scanIcon: {
+fontSize: 24,
+color: '#EAECEF',
+},
+actionsContainer: {
+flexDirection: 'row',
+justifyContent: 'space-between',
+paddingHorizontal: 16,
+marginBottom: 24,
+},
+actionButton: {
+width: (width - 48) / 4,
+borderRadius: 10,
+paddingVertical: 12,
+justifyContent: 'center',
+alignItems: 'center',
+},
+actionIcon: {
+fontSize: 24,
+color: '#FFFFFF',
+marginBottom: 8,
+},
+actionText: {
+color: '#FFFFFF',
+fontSize: 12,
+fontWeight: '500',
+textAlign: 'center',
+},
+chartContainer: {
+backgroundColor: '#1E2329',
+borderRadius: 12,
+marginHorizontal: 16,
+marginBottom: 16,
+padding: 16,
+borderWidth: 1,
+borderColor: '#313843',
+},
+chartHeader: {
+flexDirection: 'row',
+justifyContent: 'space-between',
+alignItems: 'center',
+marginBottom: 16,
+},
+chartTitle: {
+color: '#EAECEF',
+fontSize: 18,
+fontWeight: '600',
+},
+timeFilters: {
+flexDirection: 'row',
+backgroundColor: '#2B3139',
+borderRadius: 6,
+padding: 4,
+},
+timeFilter: {
+color: '#848E9C',
+fontSize: 12,
+fontWeight: '500',
+paddingHorizontal: 8,
+paddingVertical: 4,
+},
+timeFilterActive: {
+color: '#EAECEF',
+backgroundColor: '#474D57',
+borderRadius: 4,
+fontSize: 12,
+fontWeight: '500',
+paddingHorizontal: 8,
+paddingVertical: 4,
+},
+chartPlaceholder: {
+height: 200,
+backgroundColor: '#2B3139',
+borderRadius: 8,
+justifyContent: 'center',
+alignItems: 'center',
+},
+chartPlaceholderText: {
+color: '#848E9C',
+fontSize: 16,
+},
+marketContainer: {
+backgroundColor: '#1E2329',
+borderRadius: 12,
+marginHorizontal: 16,
+marginBottom: 16,
+padding: 16,
+borderWidth: 1,
+borderColor: '#313843',
+},
+marketHeader: {
+flexDirection: 'row',
+justifyContent: 'space-between',
+alignItems: 'center',
+marginBottom: 16,
+},
+marketTitle: {
+color: '#EAECEF',
+fontSize: 18,
+fontWeight: '600',
+},
+marketFilter: {
+color: '#F0B90B',
+fontSize: 14,
+fontWeight: '500',
+},
+marketTabs: {
+flexDirection: 'row',
+borderBottomWidth: 1,
+borderBottomColor: '#313843',
+marginBottom: 16,
+paddingBottom: 12,
+},
+marketTab: {
+color: '#848E9C',
+fontSize: 14,
+fontWeight: '500',
+marginRight: 24,
+},
+marketTabActive: {
+color: '#F0B90B',
+fontSize: 14,
+fontWeight: '600',
+marginRight: 24,
+borderBottomWidth: 2,
+borderBottomColor: '#F0B90B',
+paddingBottom: 12,
+marginBottom: -12,
+},
+marketColumns: {
+flexDirection: 'row',
+justifyContent: 'space-between',
+paddingHorizontal: 8,
+marginBottom: 12,
+},
+columnHeader: {
+color: '#848E9C',
+fontSize: 12,
+fontWeight: '500',
+flex: 1,
+},
+tourItem: {
+flexDirection: 'row',
+justifyContent: 'space-between',
+alignItems: 'center',
+paddingVertical: 12,
+borderBottomWidth: 1,
+borderBottomColor: '#2B3139',
+},
+tourInfo: {
+flex: 1,
+flexDirection: 'row',
+alignItems: 'center',
+},
+tourImage: {
+width: 40,
+height: 40,
+borderRadius: 20,
+marginRight: 12,
+},
+tourName: {
+color: '#EAECEF',
+fontSize: 15,
+fontWeight: '500',
+marginBottom: 4,
+},
+tourVolume: {
+color: '#848E9C',
+fontSize: 12,
+},
+priceInfo: {
+alignItems: 'flex-end',
+},
+tourPrice: {
+color: '#EAECEF',
+fontSize: 15,
+fontWeight: '500',
+marginBottom: 4,
+},
+tourChange: {
+fontSize: 13,
+fontWeight: '500',
+},
+changeUp: {
+color: '#0EBF7E',
+},
+changeDown: {
+color: '#F6465D',
+},
+promoContainer: {
+backgroundColor: 'rgba(240, 185, 11, 0.15)',
+borderRadius: 12,
+marginHorizontal: 16,
+marginBottom: 90,
+padding: 16,
+borderWidth: 1,
+borderColor: 'rgba(240, 185, 11, 0.3)',
+alignItems: 'center',
+},
+promoTitle: {
+color: '#F0B90B',
+fontSize: 18,
+fontWeight: '700',
+marginBottom: 8,
+textAlign: 'center',
+},
+promoText: {
+color: '#EAECEF',
+fontSize: 14,
+textAlign: 'center',
+marginBottom: 16,
+},
+promoButton: {
+backgroundColor: '#F0B90B',
+borderRadius: 8,
+paddingVertical: 12,
+paddingHorizontal: 24,
+},
+promoButtonText: {
+color: '#0B0E11',
+fontSize: 16,
+fontWeight: '600',
+},
+navBar: {
+position: 'absolute',
+bottom: 0,
+left: 0,
+right: 0,
+backgroundColor: '#0B0E11',
+flexDirection: 'row',
+justifyContent: 'space-around',
+paddingVertical: 12,
+borderTopWidth: 1,
+borderTopColor: '#1E2329',
+paddingBottom: 24,
+},
+navItem: {
+alignItems: 'center',
+},
+navIcon: {
+fontSize: 22,
+marginBottom: 4,
+},
+navIconActive: {
+color: '#F0B90B',
+},
+navIconInactive: {
+color: '#848E9C',
+},
+navLabel: {
+fontSize: 11,
+},
+navLabelActive: {
+color: '#F0B90B',
+fontWeight: '500',
+},
+navLabelInactive: {
+color: '#848E9C',
+},
+});
+export default HomeScreen;

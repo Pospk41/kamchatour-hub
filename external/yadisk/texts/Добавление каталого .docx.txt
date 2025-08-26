@@ -1,0 +1,482 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+View,
+Text,
+StyleSheet,
+ImageBackground,
+ScrollView,
+TouchableOpacity,
+Dimensions,
+Modal,
+Image,
+TextInput,
+Keyboard,
+FlatList
+} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+const { width, height } = Dimensions.get('window');
+const Stack = createStackNavigator();
+const HomeScreen = ({ navigation }) => {
+const [activeTab, setActiveTab] = useState('home');
+const [modalVisible, setModalVisible] = useState(false);
+const [selectedImage, setSelectedImage] = useState(null);
+const [showSearchBlock, setShowSearchBlock] = useState(false);
+const [keyboardHeight, setKeyboardHeight] = useState(0);
+const [searchFilters, setSearchFilters] = useState({
+type: '',
+dates: '',
+people: '',
+price: ''
+});
+useEffect(() => {
+const keyboardDidShowListener = Keyboard.addListener(
+'keyboardDidShow',
+(e) => {
+setKeyboardHeight(e.endCoordinates.height);
+}
+);
+const keyboardDidHideListener = Keyboard.addListener(
+'keyboardDidHide',
+() => {
+setKeyboardHeight(0);
+}
+);
+return () => {
+keyboardDidShowListener.remove();
+keyboardDidHideListener.remove();
+};
+}, []);
+// Улучшенные данные для активностей с изображениями
+const activities = [
+{
+id: '1',
+icon: '',
+title: 'Вулканы',
+image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Avachinsky_volcano.jpg/800px-Avachinsky_volcano.jpg',
+rating: 4.8,
+reviews: 128,
+onPress: () => navigation.navigate('Volcano')
+},
+{
+id: '2',
+icon: '♨️',
+title: 'Термы',
+image: 'https://example.com/therms.jpg',
+rating: 4.7,
+reviews: 95
+},
+{
+id: '3',
+icon: '',
+title: 'Рыбалка',
+image: 'https://example.com/fishing.jpg',
+rating: 4.9,
+reviews: 86
+},
+{
+id: '4',
+icon: '',
+title: 'Природа',
+image: 'https://example.com/nature.jpg',
+rating: 4.6,
+reviews: 112
+},
+{
+id: '5',
+icon: '',
+title: 'Вертолёты',
+image: 'https://example.com/helicopter.jpg',
+rating: 4.9,
+reviews: 67
+},
+{
+id: '6',
+icon: '⛵',
+title: 'Морские',
+image: 'https://example.com/sea.jpg',
+rating: 4.5,
+reviews: 78
+},
+{
+id: '7',
+icon: '',
+title: 'Джип-Туры',
+image: 'https://example.com/jeep.jpg',
+rating: 4.7,
+reviews: 54
+},
+{
+id: '8',
+icon: '',
+title: 'Сплавы',
+image: 'https://example.com/rafting.jpg',
+rating: 4.8,
+reviews: 91
+}
+];
+const navItems = [
+{ id: 'profile', icon: '', label: 'Профиль' },
+{ id: 'map', icon: '🗺️', label: 'Карта леса' },
+{ id: 'home', icon: '🏠', label: 'Главная' },
+{ id: 'favorites', icon: '❤️', label: 'Избранное' },
+{ id: 'search', icon: '🔍', label: 'Поиск' },
+{ id: 'menu', icon: '☰', label: 'Меню' },
+];
+const partnerPhotos = [
+{
+id: '1',
+url: 'https://i.pinimg.com/736x/0a/c2/86/0ac28605a4e075019f0ab47123461bf8.jpg',
+title: 'Рыбалка на Камчатке',
+source: 'fishingkam.ru'
+},
+{
+id: '2',
+url: 'https://i.pinimg.com/originals/8d/e5/ea/8de5ea9c3f38b8601474d54a7379db5b.jpg',
+title: 'Туры по Камчатке',
+source: 'mestechkokam.ru'
+},
+{
+id: '3',
+url: 'https://optim.tildacdn.com/tild6136-3038-4630-a135-633937346462/-/format/webp/noroot.png',
+title: 'Северное сияние',
+source: 'tildacdn.com'
+},
+{
+id: '4',
+url: 'https://media-cdn.tripadvisor.com/media/photo-s/10/15/73/91/caption.jpg',
+title: 'Морская рыбалка',
+source: 'fishingkam.ru'
+},
+{
+id: '5',
+url: 'https://kam-travel.ru/wp-content/uploads/2022/10/na-vertolete-na-kurilskoe-ozero.jpg',
+title: 'Вулканы Камчатки',
+source: 'mestechkokam.ru'
+},
+{
+id: '6',
+url: 'https://i.pinimg.com/originals/69/95/fb/6995fbb8cfbfe78efd7b1fd851d5fdba.jpg',
+title: 'Медведи Камчатки',
+source: 'САЙТ'
+},
+];
+const doublePartnerPhotos = [...partnerPhotos, ...partnerPhotos];
+const scrollViewRef = useRef(null);
+const currentOffset = useRef(0);
+useEffect(() => {
+const timer = setInterval(() => {
+if (scrollViewRef.current) {
+currentOffset.current += 1;
+scrollViewRef.current.scrollTo({ x: currentOffset.current, animated: false });
+const maxScroll = (width * 0.65 / 4 + 8) * partnerPhotos.length;
+if (currentOffset.current >= maxScroll) {
+currentOffset.current = 0;
+scrollViewRef.current.scrollTo({ x: 0, animated: false });
+}
+}
+}, 30);
+return () => clearInterval(timer);
+}, []);
+const openImage = (image) => {
+setSelectedImage(image);
+setModalVisible(true);
+};
+const handleNavPress = (id) => {
+setActiveTab(id);
+setShowSearchBlock(id === 'search');
+if (id === 'profile') {
+navigation.navigate('Profile');
+}
+};
+const handleSearch = () => {
+console.log('Search filters:', searchFilters);
+};
+const handleFilterChange = (name, value) => {
+setSearchFilters(prev => ({
+...prev,
+[name]: value
+}));
+};
+return (
+<ImageBackground
+source={{ uri: 'https://cs8.pikabu.ru/post_img/big/2017/05/12/4/1494568737139342763.jpg' }}
+style={styles.background}
+resizeMode="cover"
+>
+<View style={styles.overlay} />
+<ScrollView
+contentContainerStyle={styles.container}
+keyboardShouldPersistTaps="handled"
+>
+<View style={styles.header}>
+<Text style={styles.mainTitle}>Здесь начинается Россия</Text>
+<Text style={styles.subTitle}>Камчатка - земля огня и льда</Text>
+</View>
+{showSearchBlock && (
+<View style={styles.tourBlock}>
+<View style={styles.searchHeader}>
+<Text style={styles.gridTitle}>Найти тур</Text>
+<Text style={styles.searchSubtitle}>Открой для себя дикую природу Камчатки</Text>
+</View>
+<View style={styles.searchRow}>
+<TextInput
+style={styles.searchInput}
+placeholder="Куда хотите поехать?"
+placeholderTextColor="#a0aec0"
+onChangeText={(text) => handleFilterChange('query', text)}
+returnKeyType="search"
+onSubmitEditing={handleSearch}
+/>
+<TouchableOpacity
+style={styles.searchButton}
+onPress={handleSearch}
+>
+<Text style={styles.searchButtonText}>Найти</Text>
+</TouchableOpacity>
+</View>
+<View style={styles.filtersGrid}>
+<View style={styles.filterItem}>
+<Text style={styles.filterLabel}>Тип тура</Text>
+<TextInput
+style={styles.filterInput}
+placeholder="Поход, экскурсия, рыбалка..."
+placeholderTextColor="#a0aec0"
+value={searchFilters.type}
+onChangeText={(text) => handleFilterChange('type', text)}
+/>
+</View>
+<View style={styles.filterItem}>
+<Text style={styles.filterLabel}>Даты</Text>
+<TextInput
+style={styles.filterInput}
+placeholder="Выберите даты"
+placeholderTextColor="#a0aec0"
+value={searchFilters.dates}
+onChangeText={(text) => handleFilterChange('dates', text)}
+/>
+</View>
+<View style={styles.filterItem}>
+<Text style={styles.filterLabel}>Количество людей</Text>
+<TextInput
+style={styles.filterInput}
+placeholder="Сколько человек?"
+placeholderTextColor="#a0aec0"
+value={searchFilters.people}
+onChangeText={(text) => handleFilterChange('people', text)}
+keyboardType="numeric"
+/>
+</View>
+<View style={styles.filterItem}>
+<Text style={styles.filterLabel}>Бюджет</Text>
+<TextInput
+style={styles.filterInput}
+placeholder="Максимальная сумма"
+placeholderTextColor="#a0aec0"
+value={searchFilters.price}
+onChangeText={(text) => handleFilterChange('price', text)}
+keyboardType="numeric"
+/>
+</View>
+</View>
+<TouchableOpacity
+style={styles.applyButton}
+onPress={handleSearch}
+>
+<Text style={styles.applyButtonText}>Найти подходящий тур</Text>
+</TouchableOpacity>
+</View>
+)}
+{!showSearchBlock && (
+<View style={styles.activitiesContainer}>
+<Text style={styles.sectionTitle}>Активности Камчатки</Text>
+<View style={styles.activitiesGrid}>
+{activities.map((activity) => (
+<TouchableOpacity
+key={activity.id}
+style={styles.activityCard}
+onPress={activity.onPress}
+>
+<ImageBackground
+source={{ uri: activity.image }}
+style={styles.activityImage}
+imageStyle={styles.activityImageStyle}
+>
+<View style={styles.activityContent}>
+<Text style={styles.activityIcon}>{activity.icon}</Text>
+<Text style={styles.activityTitle}>{activity.title}</Text>
+<View style={styles.activityRating}>
+<Text style={styles.ratingText}>★ {activity.rating}</Text>
+<Text style={styles.reviewsText}>({activity.reviews})</Text>
+</View>
+</View>
+</ImageBackground>
+</TouchableOpacity>
+))}
+</View>
+</View>
+)}
+<View style={styles.carouselContainer}>
+<Text style={styles.sectionTitle}>Камчатка глазами путешественников</Text>
+<View style={styles.carouselWrapper}>
+<ScrollView
+ref={scrollViewRef}
+horizontal
+showsHorizontalScrollIndicator={false}
+contentContainerStyle={styles.carousel}
+scrollEventThrottle={16}
+>
+{doublePartnerPhotos.map((photo, index) => (
+<TouchableOpacity
+key={`${photo.id}-${index}`}
+onPress={() => openImage(photo)}
+activeOpacity={0.8}
+>
+<Image
+source={{ uri: photo.url }}
+style={styles.carouselItem}
+resizeMode="cover"
+/>
+</TouchableOpacity>
+))}
+</ScrollView>
+</View>
+</View>
+</ScrollView>
+<View style={[styles.navBar, {
+bottom: keyboardHeight > 0 ? keyboardHeight + 10 : 70
+}]}>
+{navItems.map((item) => (
+<TouchableOpacity
+key={item.id}
+style={[
+styles.navButton,
+activeTab === item.id && styles.activeNavButton
+]}
+onPress={() => handleNavPress(item.id)}
+activeOpacity={0.7}
+>
+<Text
+style={[
+styles.navIcon,
+activeTab === item.id ? styles.activeNavIcon : styles.inactiveNavIcon
+]}
+>
+{item.icon}
+</Text>
+</TouchableOpacity>
+))}
+</View>
+<Modal
+animationType="fade"
+transparent={true}
+visible={modalVisible}
+onRequestClose={() => setModalVisible(false)}
+>
+<View style={styles.modalContainer}>
+{selectedImage && (
+<>
+<Image
+source={{ uri: selectedImage.url }}
+style={styles.fullImage}
+resizeMode="contain"
+/>
+<View style={styles.imageInfo}>
+<Text style={styles.modalTitle}>{selectedImage.title}</Text>
+<Text style={styles.modalSource}>Источник: {selectedImage.source}</Text>
+</View>
+<TouchableOpacity
+style={styles.closeButton}
+onPress={() => setModalVisible(false)}
+>
+<Text style={styles.closeButtonText}>✕</Text>
+</TouchableOpacity>
+</>
+)}
+</View>
+</Modal>
+</ImageBackground>
+);
+};
+// Остальной код VolcanoScreen, ProfileScreen и App остается без изменений
+const styles = StyleSheet.create({
+// ... существующие стили
+// Новые стили для карточек активностей
+activitiesGrid: {
+flexDirection: 'row',
+flexWrap: 'wrap',
+justifyContent: 'space-between',
+paddingHorizontal: 5,
+},
+activityCard: {
+width: '48%',
+height: 180,
+marginBottom: 15,
+borderRadius: 12,
+overflow: 'hidden',
+shadowColor: '#000',
+shadowOffset: { width: 0, height: 2 },
+shadowOpacity: 0.2,
+shadowRadius: 4,
+elevation: 3,
+},
+activityImage: {
+width: '100%',
+height: '100%',
+justifyContent: 'flex-end',
+},
+activityImageStyle: {
+borderRadius: 12,
+},
+activityContent: {
+padding: 10,
+backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+activityIcon: {
+fontSize: 24,
+color: '#FFF',
+marginBottom: 5,
+textShadowColor: 'rgba(0, 0, 0, 0.7)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+activityTitle: {
+fontSize: 16,
+fontWeight: 'bold',
+color: '#FFF',
+marginBottom: 5,
+textShadowColor: 'rgba(0, 0, 0, 0.7)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+activityRating: {
+flexDirection: 'row',
+alignItems: 'center',
+},
+ratingText: {
+fontSize: 14,
+color: '#f6ad55',
+fontWeight: 'bold',
+marginRight: 5,
+textShadowColor: 'rgba(0, 0, 0, 0.7)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+reviewsText: {
+fontSize: 12,
+color: 'rgba(255, 255, 255, 0.8)',
+textShadowColor: 'rgba(0, 0, 0, 0.7)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+// Стили для карусели (без избранного)
+carouselItem: {
+width: width * 0.65 / 4,
+height: 180 / 4,
+borderRadius: 4,
+backgroundColor: '#ccc',
+marginRight: 8,
+},
+// ... остальные стили без изменений
+});
+export default App;

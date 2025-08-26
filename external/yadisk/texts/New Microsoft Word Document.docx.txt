@@ -1,0 +1,246 @@
+import React from 'react';
+import {
+View,
+Text,
+StyleSheet,
+ImageBackground,
+ScrollView,
+TouchableOpacity,
+Dimensions
+} from 'react-native';
+const { width, height } = Dimensions.get('window');
+const HomeScreen = () => {
+// Черно-белые иконки активностей (уменьшены на 30%)
+const activities = [
+{ id: '1', icon: '🗻', title: 'Вулканы' },
+{ id: '2', icon: '♨️', title: 'Термы' },
+{ id: '3', icon: '🐻', title: 'Природа' },
+{ id: '4', icon: '🎣', title: 'Рыбалка' },
+{ id: '5', icon: '', title: 'Вертолёты' },
+{ id: '6', icon: '⛵', title: 'Морские прогулки' },
+{ id: '6', icon: '', title: 'Сплавы' }
+];
+return (
+<ImageBackground
+source={{ uri: 'https://cs8.pikabu.ru/post_img/big/2017/05/12/4/1494568737139342763.jpg' }}
+style={styles.background}
+resizeMode="cover"
+>
+{/* Затемнение фона */}
+<View style={styles.overlay} />
+{/* Кнопка пользователя в левом верхнем углу */}
+<TouchableOpacity
+style={styles.userIcon}
+onPress={() => console.log('Auth pressed')}
+>
+<Text style={styles.userIconText}>👤</Text>
+</TouchableOpacity>
+<ScrollView contentContainerStyle={styles.container}>
+{/* Главный заголовок */}
+<View style={styles.header}>
+<Text style={styles.mainTitle}>Здесь начинается Россия</Text>
+<Text style={styles.subTitle}>Камчатка - земля огня и льда</Text>
+</View>
+{/* Иконки активностей - уменьшены на 30% и черно-белые */}
+<View style={styles.activitiesContainer}>
+<Text style={styles.sectionTitle}>Активности Камчатки</Text>
+<View style={styles.activitiesGrid}>
+{activities.map((activity) => (
+<View key={activity.id} style={styles.activityCard}>
+<Text style={[styles.activityIcon, styles.bwIcon]}>{activity.icon}</Text>
+<Text style={styles.activityTitle}>{activity.title}</Text>
+</View>
+))}
+</View>
+</View>
+{/* Призыв к действию */}
+<View style={styles.ctaContainer}>
+<Text style={styles.ctaText}>
+Откройте для себя край вулканов, гейзеров и дикой природы
+</Text>
+<TouchableOpacity style={styles.registerButton}>
+<Text style={styles.registerButtonText}>Начать путешествие</Text>
+</TouchableOpacity>
+</View>
+{/* Карусель изображений */}
+<View style={styles.carouselContainer}>
+<Text style={styles.sectionTitle}>Камчатка глазами путешественников</Text>
+<ScrollView
+horizontal
+showsHorizontalScrollIndicator={false}
+contentContainerStyle={styles.carousel}
+>
+{[1, 2, 3, 4].map((item) => (
+<ImageBackground
+key={item}
+source={{ uri: `https://picsum.photos/300/200?random=${item}&kamchatka` }}
+style={styles.carouselItem}
+imageStyle={{ borderRadius: 12 }}
+/>
+))}
+</ScrollView>
+</View>
+</ScrollView>
+</ImageBackground>
+);
+};
+const styles = StyleSheet.create({
+background: {
+flex: 1,
+width: '100%',
+height: '100%',
+},
+overlay: {
+...StyleSheet.absoluteFillObject,
+backgroundColor: 'rgba(0, 0, 0, 0.3)',
+},
+container: {
+flexGrow: 1,
+padding: 20,
+paddingBottom: 50,
+},
+userIcon: {
+position: 'absolute',
+top: height * 0.05,
+left: 20,
+zIndex: 10,
+backgroundColor: 'rgba(255, 255, 255, 0.3)',
+borderRadius: 20,
+width: 40,
+height: 40,
+justifyContent: 'center',
+alignItems: 'center',
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.5)',
+},
+userIconText: {
+fontSize: 24,
+},
+header: {
+marginTop: height * 0.08,
+marginBottom: 30,
+alignItems: 'center',
+},
+mainTitle: {
+fontSize: 32,
+fontWeight: 'bold',
+color: '#FFF',
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.7)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 5,
+marginBottom: 10,
+},
+subTitle: {
+fontSize: 18,
+color: '#FFF',
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 3,
+},
+activitiesContainer: {
+marginVertical: 20,
+},
+sectionTitle: {
+fontSize: 22,
+fontWeight: '600',
+color: '#FFF',
+marginBottom: 20,
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 3,
+},
+activitiesGrid: {
+flexDirection: 'row',
+flexWrap: 'wrap',
+justifyContent: 'center',
+},
+activityCard: {
+// Уменьшено на 30%
+width: width * 0.20,  // было 0.28
+alignItems: 'center',
+margin: 7,           // было 10
+padding: 10,         // было 15
+backgroundColor: 'rgba(255, 255, 255, 0.15)',
+borderRadius: 16,
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.2)',
+backdropFilter: 'blur(10px)',
+},
+activityIcon: {
+// Уменьшено на 30%
+fontSize: 25,        // было 36
+marginBottom: 7,     // было 10
+},
+// Новый стиль для черно-белых иконок
+bwIcon: {
+filter: 'grayscale(100%) brightness(500%)',
+opacity: 0.9,
+},
+activityTitle: {
+// Уменьшено на 30%
+fontSize: 10,        // было 14
+fontWeight: '500',
+color: '#FFF',
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+ctaContainer: {
+backgroundColor: 'rgba(156, 74, 58, 0.85)',
+borderRadius: 20,
+padding: 25,
+marginVertical: 20,
+alignItems: 'center',
+},
+ctaText: {
+fontSize: 18,
+color: '#FFF',
+textAlign: 'center',
+lineHeight: 26,
+marginBottom: 20,
+},
+registerButton: {
+backgroundColor: '#FFF',
+width: '100%',
+height: 50,
+borderRadius: 12,
+justifyContent: 'center',
+alignItems: 'center',
+marginTop: 10,
+},
+registerButtonText: {
+color: '#9C4A3A',
+fontSize: 18,
+fontWeight: 'bold',
+},
+carouselContainer: {
+marginTop: 20,
+},
+carousel: {
+paddingRight: 20,
+},
+carouselItem: {
+width: width * 0.7,
+height: 200,
+marginRight: 15,
+borderRadius: 12,
+overflow: 'hidden',
+},
+});
+export default HomeScreen;
+Необходимо в этот код добавить
+Bottom Navigation Bar* (Нижняя навигационная панель). Это стандартный элемент мобильного UX/UI-дизайна.
+### Ключевые особенности:
+1. *Расположение*
+Фиксируется в нижней части экрана для удобства доступа большим пальцем.
+2. *Состав*
+Содержит основные разделы сайта:
+- 👤 Авторизация
+- 🗺️ Карта леса
+- ❤️ Избранное
+- 🔍 Поиск
+- ☰ Меню

@@ -1,0 +1,130 @@
+Да, это отличный подход! Мы можем реализовать ваш проект через совместную работу: **я буду писать готовый код с подробными инструкциями, а вы будете копировать и запускать его**. Это особенно эффективно, учитывая ваш опыт в 1С (где важна точность копирования конфигураций).
+### 🛠️ Как мы будем работать:
+```mermaid
+graph LR
+A[Я пишу код] --> B[Вы копируете в файлы]
+B --> C[Запускаете через Expo]
+C --> D[Тестируете на телефоне]
+D --> E[Сообщаете о проблемах]
+E --> A
+```
+### ✅ Что вам понадобится:
+1. Компьютер с установленными:
+- Node.js (скачайте с [официального сайта](https://nodejs.org/))
+- Git ([скачать здесь](https://git-scm.com/))
+2. Смартфон с приложением **Expo Go** (iOS/Android)
+3. Аккаунт в Supabase (бесплатный, [регистрация](https://supabase.com/))
+### 🚀 Пошаговый старт:
+1. **Установка базовых инструментов:**
+```bash
+npm install -g expo-cli
+npx create-expo-app kamchatka-aggregator
+cd kamchatka-aggregator
+```
+2. **Создайте файл `.env` в корне проекта** со следующим содержимым:
+```env
+SUPABASE_URL=ваш_url_из_supabase
+SUPABASE_KEY=ваш_ключ_из_supabase
+```
+3. **Установите зависимости:**
+```bash
+npx expo install @supabase/supabase-js @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context expo-location
+```
+### 📝 Пример нашей первой сессии:
+Я пришлю вам код для файла `App.js`:
+```jsx
+// App.js
+import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AuthScreen from './screens/AuthScreen';
+import HomeScreen from './screens/HomeScreen';
+import { supabase } from './lib/supabase';
+import { useEffect, useState } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+const Stack = createNativeStackNavigator();
+export default function App() {
+const [session, setSession] = useState(null);
+const [loading, setLoading] = useState(true);
+useEffect(() => {
+supabase.auth.getSession().then(({ data: { session } }) => {
+setSession(session);
+setLoading(false);
+});
+supabase.auth.onAuthStateChange((_event, session) => {
+setSession(session);
+});
+}, []);
+if (loading) {
+return (
+<View style={{ flex: 1, justifyContent: 'center' }}>
+<ActivityIndicator size="large" color="#3498db" />
+</View>
+);
+}
+return (
+<NavigationContainer>
+<Stack.Navigator>
+{!session ? (
+<Stack.Screen
+name="Auth"
+component={AuthScreen}
+options={{ title: 'Камчатка Агрегатор' }}
+/>
+) : (
+<Stack.Screen
+name="Home"
+component={HomeScreen}
+options={{ headerShown: false }}
+/>
+)}
+</Stack.Navigator>
+<StatusBar style="auto" />
+</NavigationContainer>
+);
+}
+```
+**Ваши действия:**
+1. Создайте папку `lib` в корне проекта
+2. В ней создайте файл `supabase.js` с таким содержимым:
+```javascript
+// lib/supabase.js
+import { createClient } from '@supabase/supabase-js';
+import { SUPABASE_URL, SUPABASE_KEY } from '@env';
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+auth: {
+storage: AsyncStorage,
+autoRefreshToken: true,
+persistSession: true,
+detectSessionInUrl: false,
+},
+});
+```
+### 🔄 Наш рабочий процесс:
+1. **Я присылаю:**
+- Полный код файла с комментариями
+- Путь, куда его сохранить
+- Команды для установки зависимостей (если нужны новые)
+2. **Вы делаете:**
+```mermaid
+sequenceDiagram
+Участник->>Файловая система: Создает папки/файлы
+Участник->>Терминал: Копирует команды установки
+Участник->>Expo Go: Тестирует на телефоне
+Участник->>Чат: Сообщает результат
+```
+3. **Особенности для вашего опыта в 1С:**
+- Работа с файлами как с "конфигурациями"
+- Команды терминала как "внешние обработки"
+- Компоненты как "справочники" и "документы"
+### ⚙️ Первые 3 файла для старта:
+1. **`screens/AuthScreen.js`** - экран входа
+2. **`screens/HomeScreen.js`** - главный экран
+3. **`components/SOSButton.js`** - кнопка экстренной помощи
+Начнем с `AuthScreen.js`? Пришлите команду "Начинаем", и я отправлю первый файл с подробными инструкциями по размещению!
+### ⏱️ Ориентировочные сроки:
+- Базовая аутентификация: 1 день
+- Главный экран с SOS: 2 дня
+- Система бронирования: 3 дня
+- MVP целиком: 2-3 недели
+Этот метод позволяет создать профессиональное приложение без глубоких знаний программирования, используя ваш навык точного копирования конфигураций из 1С!

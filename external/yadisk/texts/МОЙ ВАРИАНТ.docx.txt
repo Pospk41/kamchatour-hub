@@ -1,0 +1,535 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+View,
+Text,
+StyleSheet,
+ImageBackground,
+ScrollView,
+TouchableOpacity,
+Dimensions,
+Modal,
+Image,
+TextInput
+} from 'react-native';
+const { width, height } = Dimensions.get('window');
+const HomeScreen = () => {
+const [activeTab, setActiveTab] = useState('home');
+const [modalVisible, setModalVisible] = useState(false);
+const [selectedImage, setSelectedImage] = useState(null);
+const [price, setPrice] = useState('');
+const [showSearchBlock, setShowSearchBlock] = useState(false);
+const activities = [
+{ id: '1', icon: '🗻', title: 'Вулканы' },
+{ id: '2', icon: '♨️', title: 'Термы' },
+{ id: '3', icon: '🎣', title: 'Рыбалка'},
+{ id: '4', icon: '🐻', title: 'Природа' },
+{ id: '5', icon: '', title: 'Вертолёты' },
+{ id: '6', icon: '⛵', title: 'Морские' },
+{ id: '7', icon: '🚗', title: 'Джип-Туры' },
+{ id: '8', icon: '🛶', title: 'Сплавы' }
+];
+const navItems = [
+{ id: 'auth', icon: '👤', label: 'Авторизация' },
+{ id: 'map', icon: '🗺️', label: 'Карта леса' },
+{ id: 'home', icon: '🏠', label: 'Главная' },
+{ id: 'favorites', icon: '❤️', label: 'Избранное' },
+{ id: 'search', icon: '🔍', label: 'Поиск' },
+{ id: 'menu', icon: '☰', label: 'Меню' },
+];
+const partnerPhotos = [
+{
+id: '1',
+url: 'https://fishingkam.ru/wp-content/uploads/2023/06/rybalka-na-kamchatke-1.jpg',
+title: 'Рыбалка на Камчатке',
+source: 'fishingkam.ru'
+},
+{
+id: '2',
+url: 'https://mestechkokam.ru/wp-content/uploads/2023/07/kamchatka-tours-1.jpg',
+title: 'Туры по Камчатке',
+source: 'mestechkokam.ru'
+},
+{
+id: '3',
+url: 'https://optim.tildacdn.com/tild6136-3038-4630-a135-633937346462/-/format/webp/noroot.png',
+title: 'Северное сияние',
+source: 'tildacdn.com'
+},
+{
+id: '4',
+url: 'https://fishingkam.ru/wp-content/uploads/2023/06/kamchatka-fishing.jpg',
+title: 'Морская рыбалка',
+source: 'fishingkam.ru'
+},
+{
+id: '5',
+url: 'https://mestechkokam.ru/wp-content/uploads/2023/07/kamchatka-volcano.jpg',
+title: 'Вулканы Камчатки',
+source: 'mestechkokam.ru'
+},
+{
+id: '6',
+url: 'https://mestechkokam.ru/wp-content/uploads/2024/03/pl5_3.jpg',
+title: 'Медведи Камчатки',
+source: 'mestechkokam.ru'
+},
+];
+// Создаем удвоенный массив для бесшовной прокрутки
+const doublePartnerPhotos = [...partnerPhotos, ...partnerPhotos];
+const scrollViewRef = useRef(null);
+const currentOffset = useRef(0);
+// Автоматическая прокрутка карусели
+useEffect(() => {
+const timer = setInterval(() => {
+if (scrollViewRef.current) {
+// Прокручиваем на 1 пиксель каждые 30 мс
+currentOffset.current += 1;
+scrollViewRef.current.scrollTo({ x: currentOffset.current, animated: false });
+// Если достигли конца первой копии, то сбрасываем на начало
+const maxScroll = (width * 0.65 / 4 + 8) * partnerPhotos.length;
+if (currentOffset.current >= maxScroll) {
+currentOffset.current = 0;
+scrollViewRef.current.scrollTo({ x: 0, animated: false });
+}
+}
+}, 30);
+return () => clearInterval(timer);
+}, []);
+const openImage = (image) => {
+setSelectedImage(image);
+setModalVisible(true);
+};
+const handleNavPress = (id) => {
+setActiveTab(id);
+setShowSearchBlock(id === 'search');
+};
+return (
+<ImageBackground
+source={{ uri: 'https://cs8.pikabu.ru/post_img/big/2017/05/12/4/1494568737139342763.jpg' }}
+style={styles.background}
+resizeMode="cover"
+>
+<View style={styles.overlay} />
+<ScrollView contentContainerStyle={styles.container}>
+<View style={styles.header}>
+<Text style={styles.mainTitle}>Здесь начинается Россия</Text>
+<Text style={styles.subTitle}>Камчатка - земля огня и льда</Text>
+</View>
+{showSearchBlock && (
+<View style={styles.tourBlock}>
+<Text style={styles.gridTitle}>Найти тур</Text>
+<TouchableOpacity
+style={styles.searchButtonBlock}
+onPress={() => console.log('Search pressed')}
+>
+<Text style={styles.searchIcon}>🔍</Text>
+</TouchableOpacity>
+<View style={styles.filtersGrid}>
+<TouchableOpacity
+style={styles.filterItem}
+onPress={() => console.log('Activity type pressed')}
+>
+<Text style={styles.filterIcon}>🏕️</Text>
+<Text style={styles.filterText}>Вид отдыха</Text>
+</TouchableOpacity>
+<TouchableOpacity
+style={styles.filterItem}
+onPress={() => console.log('Dates pressed')}
+>
+<Text style={styles.filterIcon}>📅</Text>
+<Text style={styles.filterText}>Даты</Text>
+</TouchableOpacity>
+<TouchableOpacity
+style={styles.filterItem}
+onPress={() => console.log('Travelers pressed')}
+>
+<Text style={styles.filterIcon}>👨‍👩‍👧‍👦</Text>
+<Text style={styles.filterText}>Люди</Text>
+</TouchableOpacity>
+<View style={styles.filterItem}>
+<TextInput
+style={styles.priceInput}
+placeholder="Цена"
+placeholderTextColor="rgba(255, 255, 255, 0.7)"
+value={price}
+onChangeText={setPrice}
+keyboardType="numeric"
+/>
+</View>
+</View>
+</View>
+)}
+<View style={styles.activitiesContainer}>
+<Text style={styles.sectionTitle}>Активности Камчатки</Text>
+<View style={styles.activitiesGrid}>
+{activities.map((activity) => (
+<TouchableOpacity
+key={activity.id}
+style={[
+styles.activityCard,
+activeTab === activity.id && styles.activeActivityCard
+]}
+onPress={() => setActiveTab(activity.id)}
+>
+<Text style={[styles.activityIcon, styles.whiteIcon]}>{activity.icon}</Text>
+<Text style={styles.activityTitle}>{activity.title}</Text>
+</TouchableOpacity>
+))}
+</View>
+</View>
+<View style={styles.carouselContainer}>
+<Text style={styles.sectionTitle}>Камчатка глазами путешественников</Text>
+<View style={styles.carouselWrapper}>
+<ScrollView
+ref={scrollViewRef}
+horizontal
+showsHorizontalScrollIndicator={false}
+contentContainerStyle={styles.carousel}
+scrollEventThrottle={16}
+>
+{doublePartnerPhotos.map((photo, index) => (
+<TouchableOpacity
+key={`${photo.id}-${index}`}
+onPress={() => openImage(photo)}
+activeOpacity={0.8}
+>
+<Image
+source={{ uri: photo.url }}
+style={styles.carouselItem}
+resizeMode="cover"
+/>
+</TouchableOpacity>
+))}
+</ScrollView>
+</View>
+</View>
+</ScrollView>
+<View style={styles.navBar}>
+{navItems.map((item) => (
+<TouchableOpacity
+key={item.id}
+style={[
+styles.navButton,
+activeTab === item.id && styles.activeNavButton
+]}
+onPress={() => handleNavPress(item.id)}
+activeOpacity={0.7}
+>
+<Text
+style={[
+styles.navIcon,
+activeTab === item.id ? styles.activeNavIcon : styles.inactiveNavIcon
+]}
+>
+{item.icon}
+</Text>
+</TouchableOpacity>
+))}
+</View>
+<Modal
+animationType="fade"
+transparent={true}
+visible={modalVisible}
+onRequestClose={() => setModalVisible(false)}
+>
+<View style={styles.modalContainer}>
+{selectedImage && (
+<>
+<Image
+source={{ uri: selectedImage.url }}
+style={styles.fullImage}
+resizeMode="contain"
+/>
+<View style={styles.imageInfo}>
+<Text style={styles.modalTitle}>{selectedImage.title}</Text>
+<Text style={styles.modalSource}>Источник: {selectedImage.source}</Text>
+</View>
+<TouchableOpacity
+style={styles.closeButton}
+onPress={() => setModalVisible(false)}
+>
+<Text style={styles.closeButtonText}>✕</Text>
+</TouchableOpacity>
+</>
+)}
+</View>
+</Modal>
+</ImageBackground>
+);
+};
+const styles = StyleSheet.create({
+background: {
+flex: 1,
+width: '100%',
+height: '100%',
+},
+overlay: {
+...StyleSheet.absoluteFillObject,
+backgroundColor: 'rgba(0, 0, 0, 0.3)',
+},
+container: {
+flexGrow: 1,
+padding: 15,
+paddingBottom: 50,
+},
+header: {
+marginTop: height * 0.04,
+marginBottom: 20,
+alignItems: 'center',
+},
+mainTitle: {
+fontSize: 28,
+fontWeight: 'bold',
+color: '#FFF',
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.7)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 5,
+marginBottom: 8,
+},
+subTitle: {
+fontSize: 16,
+color: '#FFF',
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 3,
+},
+activitiesContainer: {
+marginVertical: 15,
+},
+sectionTitle: {
+fontSize: 20,
+fontWeight: '600',
+color: '#FFF',
+marginBottom: 15,
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 3,
+},
+activitiesGrid: {
+flexDirection: 'row',
+flexWrap: 'wrap',
+justifyContent: 'space-between',
+paddingHorizontal: 5,
+},
+activityCard: {
+width: '24%',
+alignItems: 'center',
+marginBottom: 10,
+padding: 4,
+backgroundColor: 'rgba(255, 255, 255, 0.15)',
+borderRadius: 10,
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.2)',
+},
+activeActivityCard: {
+backgroundColor: 'rgba(255, 165, 0, 0.4)',
+borderColor: 'rgba(255, 165, 0, 0.7)',
+},
+activityIcon: {
+fontSize: 20,
+marginBottom: 2,
+},
+whiteIcon: {
+color: '#FFF',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+activityTitle: {
+fontSize: 10,
+fontWeight: '500',
+color: '#FFF',
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+carouselContainer: {
+marginTop: 15,
+},
+carouselWrapper: {
+height: 50, // Фиксированная высота для карусели
+},
+carousel: {
+flexDirection: 'row',
+alignItems: 'center',
+},
+carouselItem: {
+width: width * 0.65 / 4, // Уменьшили в 4 раза
+height: 180 / 4, // Уменьшили в 4 раза
+marginRight: 8,
+borderRadius: 4,
+backgroundColor: '#ccc',
+},
+navBar: {
+position: 'absolute',
+bottom: 10,
+left: '5%',
+right: '5%',
+backgroundColor: 'rgba(120, 120, 120, 0.4)',
+flexDirection: 'row',
+justifyContent: 'space-around',
+alignItems: 'center',
+borderRadius: 22,
+padding: 6,
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.2)',
+shadowColor: '#000',
+shadowOffset: { width: 0, height: 2 },
+shadowOpacity: 0.2,
+shadowRadius: 4,
+elevation: 3,
+height: 40,
+},
+navButton: {
+width: 32,
+height: 32,
+borderRadius: 16,
+justifyContent: 'center',
+alignItems: 'center',
+backgroundColor: 'transparent',
+},
+activeNavButton: {
+backgroundColor: 'rgba(255, 255, 255, 0.9)',
+},
+navIcon: {
+fontSize: 18,
+textAlign: 'center',
+},
+activeNavIcon: {
+color: '#000',
+},
+inactiveNavIcon: {
+color: 'rgba(255, 255, 255, 0.8)',
+},
+tourBlock: {
+backgroundColor: 'rgba(255, 255, 255, 0.15)',
+borderRadius: 20,
+padding: 15,
+marginVertical: 15,
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.25)',
+shadowColor: '#000',
+shadowOffset: { width: 0, height: 4 },
+shadowOpacity: 0.2,
+shadowRadius: 8,
+elevation: 5,
+position: 'relative',
+},
+gridTitle: {
+fontSize: 20,
+fontWeight: 'bold',
+color: '#FFF',
+marginBottom: 15,
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 3,
+},
+filtersGrid: {
+flexDirection: 'row',
+flexWrap: 'wrap',
+justifyContent: 'space-between',
+},
+filterItem: {
+width: '48%',
+height: 60,
+marginBottom: 10,
+backgroundColor: 'rgba(0, 0, 0, 0.2)',
+borderRadius: 12,
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.15)',
+justifyContent: 'center',
+alignItems: 'center',
+},
+filterIcon: {
+fontSize: 20,
+color: '#FFF',
+marginBottom: 5,
+},
+filterText: {
+fontSize: 12,
+fontWeight: '500',
+color: '#FFF',
+textAlign: 'center',
+textShadowColor: 'rgba(0, 0, 0, 0.5)',
+textShadowOffset: { width: 1, height: 1 },
+textShadowRadius: 2,
+},
+priceInput: {
+color: '#FFF',
+textAlign: 'center',
+fontSize: 14,
+fontWeight: '500',
+padding: 8,
+width: '100%',
+},
+searchButtonBlock: {
+position: 'absolute',
+top: 15,
+right: 15,
+width: 40,
+height: 40,
+borderRadius: 20,
+backgroundColor: 'rgba(255, 255, 255, 0.25)',
+justifyContent: 'center',
+alignItems: 'center',
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.3)',
+},
+searchIcon: {
+fontSize: 20,
+color: '#FFF',
+},
+modalContainer: {
+flex: 1,
+backgroundColor: 'rgba(0, 0, 0, 0.9)',
+justifyContent: 'center',
+alignItems: 'center',
+},
+fullImage: {
+width: width,
+height: height * 0.7,
+},
+imageInfo: {
+position: 'absolute',
+bottom: 40,
+left: 20,
+right: 20,
+backgroundColor: 'rgba(0, 0, 0, 0.6)',
+padding: 15,
+borderRadius: 10,
+},
+modalTitle: {
+color: '#FFF',
+fontSize: 20,
+fontWeight: 'bold',
+marginBottom: 5,
+},
+modalSource: {
+color: 'rgba(255, 255, 255, 0.7)',
+fontSize: 16,
+},
+closeButton: {
+position: 'absolute',
+top: 40,
+right: 20,
+backgroundColor: 'rgba(0, 0, 0, 0.5)',
+width: 40,
+height: 40,
+borderRadius: 20,
+justifyContent: 'center',
+alignItems: 'center',
+borderWidth: 1,
+borderColor: 'rgba(255, 255, 255, 0.3)',
+},
+closeButtonText: {
+color: '#FFF',
+fontSize: 24,
+fontWeight: 'bold',
+},
+});
+export default HomeScreen;
