@@ -4,10 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocation } from '../../hooks/useLocation';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
   const { user, signOut, isLoading } = useAuth();
   const { location, requestPermissions } = useLocation();
+  const router = useRouter();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [locationSharing, setLocationSharing] = useState(true);
   const [emergencyAlerts, setEmergencyAlerts] = useState(true);
@@ -141,6 +143,12 @@ export default function ProfileScreen() {
           value: 'Обработка данных',
           action: 'navigate',
         },
+      ],
+    },
+    {
+      title: 'Администрирование',
+      items: [
+        { icon: 'flash', title: 'Бусты', value: 'Управление бустами', action: 'navigate', route: '/admin/boosts' },
       ],
     },
   ];
