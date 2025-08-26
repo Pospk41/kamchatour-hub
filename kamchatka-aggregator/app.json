@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "kamchatka-aggregator",
-    "slug": "kamchatka-aggregator",
+    "name": "fin",
+    "slug": "fin",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
