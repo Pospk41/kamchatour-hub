@@ -3,10 +3,12 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocation } from '../../hooks/useLocation';
+import { useRouter } from 'expo-router';
 
 export default function EcoScreen() {
   const { location } = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const router = useRouter();
 
   const ecoData = {
     airQuality: {
@@ -118,18 +120,15 @@ export default function EcoScreen() {
     <TouchableOpacity key={tip.id} style={styles.tipCard}>
       <View style={styles.tipHeader}>
         <Text style={styles.tipIcon}>{tip.icon}</Text>
-        <View style={styles.tipInfo}>
-          <Text style={styles.tipTitle}>{tip.title}</Text>
-          <Text style={styles.tipDescription}>{tip.description}</Text>
-        </View>
+        <Text style={styles.tipTitle}>{tip.title}</Text>
       </View>
-      <TouchableOpacity 
-        style={styles.learnMoreButton}
-        onPress={() => Alert.alert('Подробнее', tip.description)}
-      >
-        <Text style={styles.learnMoreText}>Подробнее</Text>
-        <Ionicons name="chevron-forward" size={16} color="#0891b2" />
-      </TouchableOpacity>
+      <Text style={styles.tipDescription}>{tip.description}</Text>
+      <View style={styles.tipFooter}>
+        <Text style={styles.categoryTag}>
+          {categories.find(c => c.id === tip.category)?.name || 'Совет'}
+        </Text>
+        <Ionicons name="chevron-forward" size={20} color="#64748b" />
+      </View>
     </TouchableOpacity>
   );
 
@@ -138,34 +137,18 @@ export default function EcoScreen() {
       <ScrollView style={styles.scrollView}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Экология Камчатки</Text>
-          <Text style={styles.headerSubtitle}>
-            Заботьтесь о природе и узнавайте о состоянии окружающей среды
-          </Text>
+          <Text style={styles.headerTitle}>Экология</Text>
+          <Text style={styles.headerSubtitle}>Актуальные условия и советы</Text>
         </View>
-
-        {/* Current Location Info */}
-        {location && (
-          <View style={styles.locationCard}>
-            <Ionicons name="location" size={20} color="#0891b2" />
-            <Text style={styles.locationText}>
-              {location.address || `Координаты: ${location.coordinates.latitude.toFixed(4)}, ${location.coordinates.longitude.toFixed(4)}`}
-            </Text>
-          </View>
-        )}
 
         {/* Eco Metrics */}
-        <View style={styles.metricsSection}>
-          <Text style={styles.sectionTitle}>Текущее состояние</Text>
-          <View style={styles.metricsGrid}>
-            {Object.entries(ecoData).map(([key, data]) => renderEcoMetric(key, data))}
-          </View>
+        <View style={styles.metricsContainer}>
+          {Object.entries(ecoData).map(([key, data]) => renderEcoMetric(key, data))}
         </View>
 
-        {/* Categories Filter */}
-        <View style={styles.categoriesSection}>
-          <Text style={styles.sectionTitle}>Категории советов</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
+        {/* Categories */}
+        <View style={styles.categoriesContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {categories.map(category => (
               <TouchableOpacity
                 key={category.id}
@@ -202,7 +185,7 @@ export default function EcoScreen() {
               <Text style={styles.actionText}>Эко-отчет</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.actionItem}>
+            <TouchableOpacity style={styles.actionItem} onPress={() => router.push('/photos')}>
               <Ionicons name="camera" size={24} color="#0891b2" />
               <Text style={styles.actionText}>Фото природы</Text>
             </TouchableOpacity>
@@ -240,54 +223,23 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 8,
   },
   headerSubtitle: {
-    fontSize: 16,
-    color: '#d1fae5',
-    textAlign: 'center',
-  },
-  locationCard: {
-    backgroundColor: '#ffffff',
-    margin: 20,
-    padding: 16,
-    borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  locationText: {
-    marginLeft: 12,
     fontSize: 14,
-    color: '#64748b',
+    color: '#e0f2fe',
+    marginTop: 4,
   },
-  metricsSection: {
-    padding: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1e293b',
-    marginBottom: 16,
-  },
-  metricsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+  metricsContainer: {
+    padding: 16,
   },
   metricCard: {
     backgroundColor: '#ffffff',
-    width: '48%',
-    padding: 16,
     borderRadius: 12,
-    marginBottom: 16,
+    padding: 16,
+    marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 2,
   },
@@ -295,128 +247,123 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   metricTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     color: '#1e293b',
-    flex: 1,
   },
   statusBadge: {
+    borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 12,
   },
   statusText: {
     color: '#ffffff',
-    fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   metricValue: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-    marginBottom: 8,
+    alignItems: 'flex-end',
+    marginTop: 8,
   },
   valueNumber: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1e293b',
-    marginRight: 4,
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#1f2937',
   },
   valueUnit: {
-    fontSize: 14,
-    color: '#64748b',
-  },
-  metricDescription: {
-    fontSize: 12,
-    color: '#64748b',
-    lineHeight: 16,
-  },
-  categoriesSection: {
-    padding: 20,
-  },
-  categoriesScroll: {
-    flexDirection: 'row',
-  },
-  categoryButton: {
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 20,
-    marginRight: 12,
-    alignItems: 'center',
-    minWidth: 80,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  categoryButtonActive: {
-    backgroundColor: '#10b981',
-  },
-  categoryIcon: {
-    fontSize: 20,
-    marginBottom: 4,
-  },
-  categoryName: {
-    fontSize: 12,
-    color: '#64748b',
+    marginLeft: 6,
+    color: '#6b7280',
     fontWeight: '600',
   },
+  metricDescription: {
+    marginTop: 8,
+    color: '#374151',
+  },
+  categoriesContainer: {
+    paddingHorizontal: 12,
+  },
+  categoryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ecfeff',
+    borderWidth: 1,
+    borderColor: '#a5f3fc',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    marginRight: 8,
+  },
+  categoryButtonActive: {
+    backgroundColor: '#cffafe',
+    borderColor: '#67e8f9',
+  },
+  categoryIcon: {
+    marginRight: 6,
+    fontSize: 14,
+  },
+  categoryName: {
+    color: '#155e75',
+    fontWeight: '700',
+  },
   categoryNameActive: {
-    color: '#ffffff',
+    color: '#0e7490',
   },
   tipsSection: {
-    padding: 20,
+    padding: 16,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e293b',
+    marginBottom: 12,
   },
   tipCard: {
     backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 2,
   },
   tipHeader: {
     flexDirection: 'row',
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 8,
   },
   tipIcon: {
-    fontSize: 32,
-    marginRight: 16,
-  },
-  tipInfo: {
-    flex: 1,
+    fontSize: 18,
+    marginRight: 8,
   },
   tipTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#1e293b',
-    marginBottom: 4,
+    fontWeight: '700',
+    color: '#111827',
   },
   tipDescription: {
-    fontSize: 14,
-    color: '#64748b',
-    lineHeight: 20,
+    color: '#374151',
   },
-  learnMoreButton: {
+  tipFooter: {
+    marginTop: 8,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'flex-end',
   },
-  learnMoreText: {
-    fontSize: 14,
-    color: '#10b981',
-    fontWeight: '600',
-    marginRight: 4,
+  categoryTag: {
+    backgroundColor: '#ecfeff',
+    color: '#155e75',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    fontWeight: '700',
   },
   quickActions: {
-    padding: 20,
+    padding: 16,
   },
   actionGrid: {
     flexDirection: 'row',
@@ -432,7 +379,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 2,
   },
