@@ -4,3 +4,7 @@ export { default as BulletinScreen } from './ui/BulletinScreen';
 export { default as ProfileScreen } from './ui/ProfileScreen';
 export { default as EmergencyScreen } from './ui/EmergencyScreen';
 export { default as OfflineMapsScreen } from './ui/OfflineMapsScreen';
+export { default as AuthScreen } from './auth/AuthScreen';
+export { default as OperatorScreen } from './ui/OperatorScreen';
+export { default as TourFormScreen } from './ui/TourFormScreen';
+export { default as BookTourScreen } from './ui/BookTourScreen';

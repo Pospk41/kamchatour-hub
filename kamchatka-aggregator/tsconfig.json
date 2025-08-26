@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "ESNext",
+		"jsx": "react-native",
+		"strict": false,
+		"noEmit": true,
+		"allowJs": true,
+		"skipLibCheck": true,
+		"moduleResolution": "Bundler",
+		"resolveJsonModule": true,
+		"types": ["react", "react-native"],
+		"baseUrl": ".",
+		"paths": {
+			"@/screens/*": ["src/screens/*"],
+			"@/constants/*": ["src/constants/*"],
+			"@/services/*": ["src/services/*"],
+			"@/lib/*": ["src/lib/*"],
+			"@/types/*": ["src/types/*"]
+		}
+	},
+	"include": ["**/*.ts", "**/*.tsx"],
+	"exclude": ["node_modules"]
+}

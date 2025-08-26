@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, Dimensions, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { ALL_ACTIVITIES } from '../../constants/data';
 
 const { width } = Dimensions.get('window');
@@ -9,6 +10,7 @@ type RouteParams = { tag?: string; title?: string };
 
 export default function ActivitiesScreen() {
 	const route = useRoute();
+	const navigation = useNavigation();
 	const { tag, title } = (route.params || {}) as RouteParams;
 	const [selected, setSelected] = useState<any>(null);
 	const [favorites, setFavorites] = useState<Record<string, boolean>>({});
@@ -19,7 +21,7 @@ export default function ActivitiesScreen() {
 	const toggleFav = (id: string) => setFavorites((p) => ({ ...p, [id]: !p[id] }));
 
 	const renderItem = ({ item }: any) => (
-		<TouchableOpacity style={styles.card} onPress={() => setSelected(item)}>
+		<TouchableOpacity style={styles.card} onPress={() => navigation.navigate('BookTour' as never, { tour: item } as never)}>
 			<View style={styles.imageWrap}>
 				<Image source={{ uri: item.image }} style={styles.image} />
 				{item.spotsLeft > 0 && item.spotsLeft < 5 && (
@@ -44,7 +46,7 @@ export default function ActivitiesScreen() {
 				</View>
 				<View style={styles.footer}>
 					<Text style={styles.cancel}>✅ {item.cancellation}</Text>
-					<TouchableOpacity style={styles.bookBtn} onPress={() => setSelected(item)}>
+					<TouchableOpacity style={styles.bookBtn} onPress={() => navigation.navigate('BookTour' as never, { tour: item } as never)}>
 						<Text style={styles.bookText}>Выбрать даты</Text>
 					</TouchableOpacity>
 				</View>
