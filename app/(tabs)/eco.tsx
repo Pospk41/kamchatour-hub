@@ -4,11 +4,26 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocation } from '../../hooks/useLocation';
 import { useRouter } from 'expo-router';
+import { getEcoBalance } from '../../lib/eco';
+import { listBoosts, isBoostActive } from '../../lib/boosts';
 
 export default function EcoScreen() {
   const { location } = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const router = useRouter();
+  const [ecoPoints, setEcoPoints] = useState<number>(0);
+  const [activeBoosts, setActiveBoosts] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    (async () => {
+      // заглушка userId, в реальном коде возьмём из useAuth
+      const bal = await getEcoBalance('demo-user');
+      setEcoPoints(bal.points);
+      const boosts = await listBoosts();
+      const now = Date.now();
+      setActiveBoosts(boosts.filter(b => isBoostActive(b, now)).slice(0, 4));
+    })();
+  }, []);
 
   const ecoData = {
     airQuality: {
@@ -140,6 +155,26 @@ export default function EcoScreen() {
           <Text style={styles.headerTitle}>Экология</Text>
           <Text style={styles.headerSubtitle}>Актуальные условия и советы</Text>
         </View>
+
+        {/* Eco Points Balance */}
+        <View style={styles.pointsCard}>
+          <Ionicons name="leaf" size={20} color="#10b981" />
+          <Text style={styles.pointsText}>ЭКО баллы: <Text style={styles.pointsValue}>{ecoPoints}</Text></Text>
+        </View>
+
+        {/* Active Boosts */}
+        {activeBoosts.length > 0 && (
+          <View style={styles.boostsSection}>
+            <Text style={styles.sectionTitle}>Активные бусты</Text>
+            {activeBoosts.map((b) => (
+              <View key={b.id} style={styles.boostCard}>
+                <Text style={styles.boostName}>{b.name}</Text>
+                {b.multiplier && <Text style={styles.boostMeta}>×{b.multiplier}</Text>}
+                {b.bonusPoints && <Text style={styles.boostMeta}>+{b.bonusPoints} баллов</Text>}
+              </View>
+            ))}
+          </View>
+        )}
 
         {/* Eco Metrics */}
         <View style={styles.metricsContainer}>
@@ -389,4 +424,33 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1e293b',
   },
+  pointsCard: {
+    backgroundColor: '#ecfeff',
+    borderColor: '#a5f3fc',
+    borderWidth: 1,
+    margin: 16,
+    padding: 12,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  pointsText: { color: '#0e7490', fontWeight: '700' },
+  pointsValue: { color: '#0e7490' },
+  boostsSection: { paddingHorizontal: 16, marginTop: 4 },
+  boostCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  boostName: { color: '#111827', fontWeight: '700' },
+  boostMeta: { color: '#374151', fontWeight: '600' },
 });
