@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function BookingScreen() {
   const { user } = useAuth();
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>('tours');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -162,7 +164,7 @@ export default function BookingScreen() {
   };
 
   const renderTourCard = (item: any) => (
-    <TouchableOpacity key={item.id} style={styles.card}>
+    <TouchableOpacity key={item.id} style={styles.card} onPress={() => router.push({ pathname: '/tour/[id]', params: { id: item.id } })}>
       <View style={styles.cardHeader}>
         <Text style={styles.cardImage}>{item.image}</Text>
         <View style={styles.cardInfo}>
