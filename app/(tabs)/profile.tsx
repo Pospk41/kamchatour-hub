@@ -149,6 +149,7 @@ export default function ProfileScreen() {
       title: 'Администрирование',
       items: [
         { icon: 'flash', title: 'Бусты', value: 'Управление бустами', action: 'navigate', route: '/admin/boosts' },
+        { icon: 'speedometer', title: 'Дашборд', value: 'Статистика', action: 'navigate', route: '/admin/dashboard' },
       ],
     },
   ];
