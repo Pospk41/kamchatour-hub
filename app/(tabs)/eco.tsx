@@ -169,8 +169,11 @@ export default function EcoScreen() {
             {activeBoosts.map((b) => (
               <View key={b.id} style={styles.boostCard}>
                 <Text style={styles.boostName}>{b.name}</Text>
-                {b.multiplier && <Text style={styles.boostMeta}>×{b.multiplier}</Text>}
-                {b.bonusPoints && <Text style={styles.boostMeta}>+{b.bonusPoints} баллов</Text>}
+                <View style={{ alignItems: 'flex-end' }}>
+                  {b.multiplier && <Text style={styles.boostMeta}>×{b.multiplier}</Text>}
+                  {b.bonusPoints && <Text style={styles.boostMeta}>+{b.bonusPoints} баллов</Text>}
+                  {b.activeTo ? <BoostTimer to={b.activeTo} /> : null}
+                </View>
               </View>
             ))}
           </View>
@@ -239,6 +242,20 @@ export default function EcoScreen() {
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+function BoostTimer({ to }: { to: number }) {
+  const [left, setLeft] = React.useState<number>(to - Date.now());
+  React.useEffect(() => {
+    const t = setInterval(() => setLeft(to - Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [to]);
+  if (left <= 0) return <Text style={{ color: '#ef4444', fontWeight: '700' }}>истёк</Text>;
+  const s = Math.floor(left / 1000);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return <Text style={{ color: '#16a34a', fontWeight: '700' }}>{h}:{String(m).padStart(2,'0')}:{String(sec).padStart(2,'0')}</Text>;
 }
 
 const styles = StyleSheet.create({
