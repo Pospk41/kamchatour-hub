@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "tuor-hab",
-    "slug": "tuor-hab",
-    "owner": "pk41",
+    "name": "kamchatour-hub",
+    "slug": "kamchatour-hub",
+    "owner": "pos-servis",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -26,24 +26,8 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
-    ],
     "experiments": {
       "typedRoutes": true
-    },
-    "extra": {
-      "eas": {
-        "projectId": "bcfbdf6d-19ee-4e73-ab0c-5f8ebd2a9ebe"
-      }
     }
   }
 }
