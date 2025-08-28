@@ -82,7 +82,7 @@ export default function TourDetailScreen() {
           <Text style={styles.reviewAuthor}>— Анна</Text>
         </View>
 
-        <TouchableOpacity style={styles.bookBtn} onPress={() => router.push('/booking')}>
+        <TouchableOpacity style={styles.bookBtn} onPress={() => router.push({ pathname: '/booking/funnel', params: { id: tour.id, title: tour.title, price: String(tour.price) } })}>
           <Text style={styles.bookText}>Забронировать</Text>
         </TouchableOpacity>
       </ScrollView>

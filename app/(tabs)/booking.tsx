@@ -154,10 +154,8 @@ export default function BookingScreen() {
       [
         { text: 'Отмена', style: 'cancel' },
         {
-          text: 'Забронировать',
-          onPress: () => {
-            Alert.alert('Успешно', 'Ваше бронирование подтверждено!');
-          },
+          text: 'Далее',
+          onPress: () => router.push({ pathname: '/booking/funnel', params: { id: item.id, title: item.title, price: String(item.price) } }),
         },
       ]
     );
