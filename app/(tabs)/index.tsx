@@ -59,6 +59,7 @@ export default function HomeScreen() {
   }, [user]);
 
   const services = [
+    { id: 'map', title: 'Карта', icon: 'map', onPress: () => router.push('/(tabs)/map') },
     { id: 'tours', title: 'Туры', icon: 'map', onPress: () => router.push('/booking') },
     { id: 'transfer', title: 'Трансфер', icon: 'car', onPress: () => router.push('/booking') },
     { id: 'photos', title: 'Фотоотчёт', icon: 'images', onPress: () => router.push('/photos') },
