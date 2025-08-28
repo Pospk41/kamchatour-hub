@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "kamchatour-hub",
-    "slug": "kamchatour-hub",
-    "owner": "pos-servis",
+    "name": "tuor-hab",
+    "slug": "tuor-hab",
+    "owner": "pk41",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
